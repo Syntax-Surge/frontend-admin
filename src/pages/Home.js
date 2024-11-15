@@ -1,10 +1,12 @@
-import { Button } from '@material-tailwind/react'
 import React from 'react'
+import Sidebar from '../components/layout/sidebar'
+import Header from '../components/layout/header'
 
 const Home = () => {
   return (
-    <div>
-      <Button>Hello</Button>
+    <div className='flex flex-row'>
+      <Sidebar/>
+      <Header/>
     </div>
   )
 }
