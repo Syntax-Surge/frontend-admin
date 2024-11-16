@@ -15,9 +15,12 @@ import {
   PowerIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -42,65 +45,59 @@ const Sidebar = () => {
         } transition-transform lg:translate-x-0`}
       >
         <div className="mb-2 p-4">
-          <Typography variant="h5" color="blue-gray">
+          <Typography variant="h5" color="black">
             Plant Shop
           </Typography>
         </div>
-        <hr className="my-2 border-blue-gray-50" />
+        <hr className="my-2 border-blue-gray-200" />
         <List>
           <ListItem>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
-            <Typography color="blue-gray" className="mr-auto font-normal">
-              Name
-            </Typography>
+            Name
           </ListItem>
         </List>
-        <hr className="my-2 border-blue-gray-50" />
+        <hr className="my-2 border-blue-gray-200" />
         <List>
-          <ListItem>
+          <ListItem onClick={() => navigate("/")}>
             <ListItemPrefix>
               <PresentationChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>
-            <Typography color="blue-gray" className="mr-auto font-normal">
-              Dashboard
-            </Typography>
+            Dashboard
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => navigate("/users")}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
-            <Typography color="blue-gray" className="mr-auto font-normal">
-              Users
-            </Typography>
+            Users
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => navigate("/products")}>
             <ListItemPrefix>
               <InboxIcon className="h-5 w-5" />
             </ListItemPrefix>
             Products
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => navigate("/orders")}>
             <ListItemPrefix>
               <ShoppingBagIcon className="h-5 w-5" />
             </ListItemPrefix>
             Orders
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => navigate("/categories")}>
             <ListItemPrefix>
               <Cog6ToothIcon className="h-5 w-5" />
             </ListItemPrefix>
             Categories
           </ListItem>
-          <ListItem>
+          <ListItem onClick={() => navigate("/reviews")}>
             <ListItemPrefix>
               <Cog6ToothIcon className="h-5 w-5" />
             </ListItemPrefix>
             Reviews
           </ListItem>
-          <hr className="my-2 border-blue-gray-50" />
-          <ListItem>
+          <hr className="my-2 border-blue-gray-200" />
+          <ListItem onClick={() => navigate("/buttontest")}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>

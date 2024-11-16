@@ -1,6 +1,6 @@
 import React from 'react'
-import BreadcrumbsWithIcon from './breadcrumbs'
-import SearchBar from '../common/searchbar'
+import BreadcrumbsWithIcon from './Breadcrumbs'
+import SearchBar from '../common/SearchBar'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 
 const Header = () => {
