@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Card, Typography } from "@material-tailwind/react";
 
-const FileUpload = () => {
+const FileUpload = ({onFileSelect}) => {
+
   const handleDrop = (e) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
-    console.log("Files dropped: ", files);
+    onFileSelect(e.dataTransfer.files[0])
+    console.log("Files dropped: ", e.dataTransfer.files[0]);
   };
 
   const handleFileInput = (e) => {
-    const files = e.target.files;
-    console.log("Files selected: ", files);
+    onFileSelect(e.target.files[0])
+    console.log("Files selected: ", e.target.files[0]);
   };
 
+  
   return (
     <div className="justify-center items-center">
       <Card
@@ -24,7 +26,6 @@ const FileUpload = () => {
           type="file"
           id="file-upload"
           className="hidden"
-          multiple
           onChange={handleFileInput}
         />
         <label htmlFor="file-upload" className="flex flex-col items-center">
