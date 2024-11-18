@@ -1,49 +1,285 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FileUpload from '../common/FileUpload'
-import AddCategoryButton from '../Buttons/AddCategoryButton'
+import AddButton from '../Buttons/AddButton'
+import DropDown from '../common/DropDown'
+import AddButtonOutlined from '../Buttons/AddButtonOutlined'
+import { useCustomContext } from '../../contexts/Context'
+import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import DeleteButton from '../Buttons/DeleteButton'
+import axios from 'axios';
 
 const CategoryForm = () => {
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const {               
+    categoryName,
+    setCategoryName,
+    parentValue,
+    setParentValue,
+    description,
+    setDescription,
+    image,
+    setImage,
+    imageUrl,
+    setImageUrl,
+    resetDropdown,
+    setResetDropdown,
+    editCategory, 
+    setEditCategory,
+    selectedItem, } = useCustomContext();
+  
+  const onClear = () => {
+    setCategoryName("")
+    setParentValue("")
+    setDescription("")
+    setImage("")
+    setResetDropdown((prev) => !prev);
+  }
+
+  useEffect(() => {
+    onClear();
+  },[navigate])
+
+
+  
+
+  const handleDropDownChange = (value) => {
+    setParentValue(value);
+  };
+
+  const handleFileSelect = (file) => {
+    setImage(file);
+  }
+
+  const handleUpload = async () => {
+    if (!image) return;
+
+    const formData = new FormData();
+    formData.append('image', image);
+
+    setLoading(true);
+    try {
+      const response = await axios.post('/api/categories/imageUpload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setImageUrl(response.data.url);
+    } catch (error) {
+      console.error('Upload failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit = async () => {
+    if (!categoryName && parentValue === ''){
+      toast.error('Please fill required fields', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+    else{
+      console.log(categoryName, parentValue, description, imageUrl);
+      try {
+        handleUpload();
+
+        const formData = {
+          "categoryName": categoryName,
+          "parentId": parentValue,
+          "description": description,
+          "imageUrl": imageUrl,
+        }
+
+        console.log(formData);
+
+        const response = await axios.post('/api/categories', formData, {
+          headers: {
+            'Content-Type': 'Application/json',
+          },
+        });
+        if (response.status === 200) {
+          toast.success('New category created successfully', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            console.log('response : ', response.data)
+        }
+      } catch (error) {
+        console.error('category creation failed:', error);
+        toast.error('Category creation failed!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          }); 
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
+  const onUpdate = async () => {
+    const id = selectedItem;
+    if (!categoryName && parentValue === ''){
+      toast.error('Please fill required fields', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+    else{
+      try {    
+        handleUpload();
+
+        const formData = {
+          "categoryName": categoryName,
+          "parentId": parentValue,
+          "description": description,
+          "imageUrl": imageUrl,
+        }
+        console.log(formData);
+
+        const response = await axios.put(`/api/categories/${id}`, formData, {
+          headers: {
+            'Content-Type': 'Application/json',
+          },
+        });
+        if (response.status === 200) {
+          toast.success('Category update successfully', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            console.log('response : ', response.data)
+            setEditCategory(false);
+        }
+      } catch (error) {
+        console.error('category update failed:', error);
+        toast.error('Category update failed!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          }); 
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
   return (
-    <div className="flex flex-col w-full items-center p-4 px-8">
-      <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
-        <label className="text-lg font-bold">
-          Add new Category
-        </label>
-      </div>
-      <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
-          <label class="block mb-2 text-sm text-gray-600">
-              Category Name
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={2} 
+        theme="light" 
+      />
+      <div className="flex flex-col w-full items-center pt-10 px-8">
+        <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
+          
+            {editCategory? (
+              <label className="text-lg font-bold">
+                Edit Category
+              </label>
+            ):(              
+              <label className="text-lg font-bold">
+                Add new Category
+              </label>
+            )}
+          
+        </div>
+        <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
+            <label class="block mb-2 text-sm text-gray-600">
+                Category Name
+            </label>
+            <input class="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 shadow-sm focus:shadow" 
+              placeholder="Bonsai"
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+        </div>
+        <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px]  p-2">
+            <label class="block mb-2 text-sm text-gray-600">
+                Parent Category
+            </label>
+            <DropDown onValueChange={handleDropDownChange} reset={resetDropdown} />
+        </div>      
+        <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
+            <label class="block mb-2 text-sm text-gray-600">
+                Description
+            </label>
+            <textarea class="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 shadow-sm focus:shadow" 
+              placeholder="Bonsai is herbal plat that grows." 
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+        </div>
+        <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px]">
+          <label class="block mx-2 mb-2 text-sm text-gray-600">
+                Image
           </label>
-          <input class="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-400 hover:border-gray-600 shadow-sm focus:shadow" 
-            placeholder="Bonsai" 
-          />
+          <FileUpload onFileSelect={handleFileSelect}/>
+        </div>
+        <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[300px] pt-8 justify-end">
+          {editCategory? (
+            <>            
+              <DeleteButton name="Delete" onClick={onClear}/>
+              <AddButton name="Update Category" onClick={onUpdate}/>
+            </>
+          ):(          
+            <>            
+              <AddButtonOutlined name="Clear" onClick={onClear}/>
+              <AddButton name="Add Category" onClick={onSubmit}/>
+            </>
+          )}
+
+        </div>
       </div>
-      <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px]  p-2">
-          <label class="block mb-2 text-sm text-gray-600">
-              Parent Category
-          </label>
-          <input class="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-400 hover:border-gray-600 shadow-sm focus:shadow" 
-            placeholder="Indoor plants" 
-          />
-      </div>      
-      <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
-          <label class="block mb-2 text-sm text-gray-600">
-              Description
-          </label>
-          <textarea class="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-400 hover:border-gray-600 shadow-sm focus:shadow" 
-            placeholder="Bonsai is herbal plat that grows." 
-          />
-      </div>
-      <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px]">
-        <label class="block mx-2 mb-2 text-sm text-gray-600">
-              Image
-        </label>
-        <FileUpload/>
-      </div>
-      <div className="px-4 pt-8 w-full flex justify-end">
-        <AddCategoryButton/>
-      </div>
-    </div>
+    </>
   )
 }
 

@@ -40,17 +40,17 @@ const Sidebar = () => {
       </div>
 
       <Card
-        className={`lg:relative fixed top-0 left-0 h-full w-[18rem] p-4 pt-8 lg:pb-16 shadow-xl shadow-blue-gray-900/5 bg-white z-40 transform ${
+        className={`lg:relative fixed h-full min-h-[670px] w-[18rem] p-4 pt-4 mt-4 rounded-none rounded-r-xl lg:pb-16 shadow-xl shadow-gray-900/5 bg-[#1B786F] z-40 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform lg:translate-x-0`}
       >
         <div className="mb-2 p-4">
-          <Typography variant="h5" color="black">
+          <Typography variant="h5" color="white">
             Plant Shop
           </Typography>
         </div>
-        <hr className="my-2 border-blue-gray-200" />
-        <List>
+        <hr className="my-2 border-white-200" />
+        <List className="text-white">
           <ListItem>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
@@ -58,8 +58,8 @@ const Sidebar = () => {
             Name
           </ListItem>
         </List>
-        <hr className="my-2 border-blue-gray-200" />
-        <List>
+        <hr className="my-2 border-white-200" />
+        <List className="text-white">
           <ListItem onClick={() => navigate("/")}>
             <ListItemPrefix>
               <PresentationChartBarIcon className="h-5 w-5" />

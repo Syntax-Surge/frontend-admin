@@ -2,6 +2,7 @@ import React from 'react'
 import CategoryForm from '../components/layout/CategoryFrom'
 import Sidebar from '../components/layout/SideBar'
 import Header from '../components/layout/Header'
+import AllCategories from '../components/layout/AllCategories'
 
 const Category = () => {
   return (
@@ -11,7 +12,7 @@ const Category = () => {
             <div className='flex flex-col w-full'>
                 <Header/>
                 <div className='flex flex-row w-full'>
-                    <Sidebar/>
+                    <AllCategories/>
                     <CategoryForm/>
                 </div>
             </div>
