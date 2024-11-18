@@ -2,14 +2,29 @@ import React, { useState } from "react";
 import Modal from '../common/Modal'; // Assuming the Modal component is correctly imported
 import FileUpload from "../common/FileUpload";
 import AddCategoryButton from "../Buttons/AddCategoryButton";
+import UpdateProductButton from "../Buttons/UpdateProductButton";
+import CancelButton from "../Buttons/CancelButton";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedProduct, setSelectedProduct] = useState(null); // State for selected product
-
+  const navigate = useNavigate()
+  
   const handleEditClick = (product) => {
     setSelectedProduct(product); // Set the product to edit
     setIsModalOpen(true); // Open the modal
+  };
+  const validateUpdateProduct = (formData) => {
+    return (
+      formData.categoryName?.trim() &&
+      formData.productName?.trim() &&
+      formData.species?.trim() &&
+      formData.description?.trim()
+    );
+  };
+  const handleAddProduct = () => {
+    navigate("/products/AddProduct"); // Navigate to Add Product page
   };
 
   const products = [
@@ -88,7 +103,10 @@ const Products = () => {
             </button>
           </div>
         </div>
-        <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+        <button
+          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
+          onClick={handleAddProduct} // Navigate on click
+        >
           Add Product
         </button>
       </div>
@@ -219,10 +237,30 @@ const Products = () => {
     </div>
   </div>
 
-  {/* Submit Button */}
-  <div className="flex justify-end mt-8 w-full">
-    <AddCategoryButton />
-  </div>
+
+  <div className="flex justify-end mt-8 w-full gap-4">
+
+
+
+  <div className="flex justify-end mt-8 w-full gap-4">
+  {/* Cancel Button */}
+  <CancelButton onClick={() => setIsModalOpen(false)} />
+
+  {/* Update Product Button */}
+  <UpdateProductButton
+    disabled={
+      !validateUpdateProduct({
+        categoryName: selectedProduct?.name,
+        productName: selectedProduct?.name,
+        species: "Placeholder species",
+        description: "Placeholder description",
+      })
+    }
+  />
+</div>
+
+</div>
+
 </div>
 
 
@@ -234,13 +272,5 @@ const Products = () => {
 };
 
 export default Products;
-
-
-
-
-
-
-
-
 
 
