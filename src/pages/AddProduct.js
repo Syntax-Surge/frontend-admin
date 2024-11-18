@@ -1,20 +1,20 @@
 import React from "react";
 import Sidebar from "../components/layout/SideBar";
 import Header from "../components/layout/Header";
-import Products from "../components/layout/ProductsTable";
+import AddProducts from "./Products/AddProducts";
 
-const Product = () => {
+const AddProduct = () => {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex bg-gray-50 h-screen">
       <Sidebar />
       <div className="flex flex-col w-full">
         <Header />
-        <div className="flex flex-col w-full px-6 py-6">
-          <Products />
+        <div className="flex flex-col w-full px-10 py-6">
+          <AddProducts />
         </div>
       </div>
     </div>
   );
 };
 
-export default Product;
+export default AddProduct;
