@@ -11,7 +11,7 @@ import DeleteButton from '../Buttons/DeleteButton'
 import axios from 'axios';
 import { BASE_URL } from '../../config'
 
-const CategoryForm = ({categories}) => {
+const CategoryForm = ({categories, fetchCategories}) => {
 
   const [loading, setLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -122,6 +122,7 @@ const CategoryForm = ({categories}) => {
             progress: undefined,
             theme: "light",
             });
+          fetchCategories();
           onClear();
           console.log('response : ', response.data)
         }
@@ -168,7 +169,7 @@ const CategoryForm = ({categories}) => {
         handleUpload();
 
         const formData = {
-          "categoryName": categoryName,
+          "name": categoryName,
           "parentValue": parentValue,
           "description": description,
           "image": imageUrl,
@@ -193,6 +194,7 @@ const CategoryForm = ({categories}) => {
             });
             console.log('response : ', response.data)
             setEditCategory(false);
+            fetchCategories();
             onClear();
         }
       } catch (error) {
@@ -235,6 +237,7 @@ const CategoryForm = ({categories}) => {
             });
             console.log('response : ', response.data)
             setEditCategory(false);
+            fetchCategories();
             onClear();
         }
       } catch (error) {

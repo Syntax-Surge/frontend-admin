@@ -11,17 +11,17 @@ const Category = () => {
   const { setEditCategory,} = useCustomContext();
   const [categories, setCategories] = useState([]);
 
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/categories`);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   useEffect(() => {
     setEditCategory(false);
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/categories`);
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-  
     fetchCategories();
   }, []);
 
@@ -33,7 +33,7 @@ const Category = () => {
                 <Header/>
                 <div className='flex flex-row w-full'>
                     <AllCategories categories={categories}/>
-                    <CategoryForm categories={categories}/>
+                    <CategoryForm categories={categories} fetchCategories={fetchCategories}/>
                 </div>
             </div>
         </div>
