@@ -5,7 +5,7 @@ const Context = createContext();
 export const Provider = ({children}) => {
     // Add global states here
     const [categoryName, setCategoryName] = useState("");
-    const [parentValue, setParentValue] = useState();
+    const [parentValue, setParentValue] = useState(null);
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
     const [resetDropdown, setResetDropdown] = useState(false);

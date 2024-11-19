@@ -9,10 +9,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import DeleteButton from '../Buttons/DeleteButton'
 import axios from 'axios';
+import { BASE_URL } from '../../config'
 
-const CategoryForm = () => {
+const CategoryForm = ({categories}) => {
 
   const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,9 +47,6 @@ const CategoryForm = () => {
     onClear();
   },[navigate])
 
-
-  
-
   const handleDropDownChange = (value) => {
     setParentValue(value);
   };
@@ -64,7 +63,7 @@ const CategoryForm = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post('/api/categories/imageUpload', formData, {
+      const response = await axios.post(`${BASE_URL}/categories/imageUpload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -78,7 +77,7 @@ const CategoryForm = () => {
   };
 
   const onSubmit = async () => {
-    if (!categoryName && parentValue === ''){
+    if (!categoryName ){
       toast.error('Please fill required fields', {
         position: "top-center",
         autoClose: 5000,
@@ -92,24 +91,27 @@ const CategoryForm = () => {
     }
     else{
       console.log(categoryName, parentValue, description, imageUrl);
+
       try {
+        setLoading(true);
+
         handleUpload();
 
         const formData = {
-          "categoryName": categoryName,
-          "parentId": parentValue,
+          "name": categoryName,
+          "parentValue": parentValue,
           "description": description,
-          "imageUrl": imageUrl,
+          "image": imageUrl,
         }
 
         console.log(formData);
 
-        const response = await axios.post('/api/categories', formData, {
+        const response = await axios.post(`${BASE_URL}/categories`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },
         });
-        if (response.status === 200) {
+        if (response.status === 201) {
           toast.success('New category created successfully', {
             position: "top-center",
             autoClose: 5000,
@@ -120,7 +122,8 @@ const CategoryForm = () => {
             progress: undefined,
             theme: "light",
             });
-            console.log('response : ', response.data)
+          onClear();
+          console.log('response : ', response.data)
         }
       } catch (error) {
         console.error('category creation failed:', error);
@@ -142,7 +145,9 @@ const CategoryForm = () => {
 
   const onUpdate = async () => {
     const id = selectedItem;
-    if (!categoryName && parentValue === ''){
+    setLoading(true);
+    console.log("h2");   
+    if (!categoryName){
       toast.error('Please fill required fields', {
         position: "top-center",
         autoClose: 5000,
@@ -154,19 +159,23 @@ const CategoryForm = () => {
         theme: "light",
         });
     }
+
     else{
-      try {    
+      try {        
+        console.log("h1");        
+        setLoading(true);
+
         handleUpload();
 
         const formData = {
           "categoryName": categoryName,
-          "parentId": parentValue,
+          "parentValue": parentValue,
           "description": description,
-          "imageUrl": imageUrl,
+          "image": imageUrl,
         }
         console.log(formData);
 
-        const response = await axios.put(`/api/categories/${id}`, formData, {
+        const response = await axios.put(`${BASE_URL}/categories/${id}`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },
@@ -184,6 +193,7 @@ const CategoryForm = () => {
             });
             console.log('response : ', response.data)
             setEditCategory(false);
+            onClear();
         }
       } catch (error) {
         console.error('category update failed:', error);
@@ -202,6 +212,47 @@ const CategoryForm = () => {
       }
     }
   }
+
+
+  const onDelete = async () => {
+      const id = selectedItem;
+
+      try {            
+        setLoadingDelete(true);
+
+        const response = await axios.delete(`${BASE_URL}/categories/${id}`);
+
+        if (response.status === 200) {
+          toast.success('Category Deleted Successfully', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            console.log('response : ', response.data)
+            setEditCategory(false);
+            onClear();
+        }
+      } catch (error) {
+        console.error('category update failed:', error);
+        toast.error('Category deletion failed!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          }); 
+      } finally {
+        setLoadingDelete(false);
+      }
+    }
 
   return (
     <>
@@ -246,7 +297,7 @@ const CategoryForm = () => {
             <label class="block mb-2 text-sm text-gray-600">
                 Parent Category
             </label>
-            <DropDown onValueChange={handleDropDownChange} reset={resetDropdown} />
+            <DropDown onValueChange={handleDropDownChange} reset={resetDropdown} categories={categories}/>
         </div>      
         <div class="w-full max-w-lg lg:min-w-[400px] min-w-[300px] p-2">
             <label class="block mb-2 text-sm text-gray-600">
@@ -267,13 +318,13 @@ const CategoryForm = () => {
         <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[300px] pt-8 justify-end">
           {editCategory? (
             <>            
-              <DeleteButton name="Delete" onClick={onClear}/>
-              <AddButton name="Update Category" onClick={onUpdate}/>
+              <DeleteButton name="Delete" onClick={onDelete} loading={loadingDelete}/>
+              <AddButton name="Update Category" onClick={onUpdate} loading={loading}/>
             </>
           ):(          
             <>            
               <AddButtonOutlined name="Clear" onClick={onClear}/>
-              <AddButton name="Add Category" onClick={onSubmit}/>
+              <AddButton name="Add Category" onClick={onSubmit} loading={loading}/>
             </>
           )}
 

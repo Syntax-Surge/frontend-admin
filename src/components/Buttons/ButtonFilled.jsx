@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@material-tailwind/react";
 
-const ButtonFilled = ({name, onClick}) => {
+const ButtonFilled = ({name, onClick, loading}) => {
   return (
     <div>
       <Button
@@ -11,6 +11,7 @@ const ButtonFilled = ({name, onClick}) => {
           height: "35px",
           borderRadius: "4px",
         }}
+        loading={loading}
         onClick={onClick}
       >
         {name}

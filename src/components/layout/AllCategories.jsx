@@ -6,11 +6,11 @@ import {
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useCustomContext } from "../../contexts/Context";
-import axios from "axios";
 
-const AllCategories = () => {
+
+const AllCategories = ({categories}) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-  // const [categories, setCategories] = useState([]);
+
   const {    
     setCategoryName,
     setParentValue,
@@ -19,7 +19,8 @@ const AllCategories = () => {
     editCategory, 
     setEditCategory,
     selectedItem,
-    setSelectedItem } = useCustomContext();
+    setSelectedItem,
+    setResetDropdown } = useCustomContext();
   
   const navigate = useNavigate();
 
@@ -27,44 +28,17 @@ const AllCategories = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-
-  //dummy data
-  const categories = [
-    {
-      "id": 1,
-      "name": "Indoor Plants",
-      "subcategories": [
-        { "id": 101, "name": "Succulents" },
-        { "id": 102, "name": "Cacti" }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Outdoor Plants",
-      "subcategories": [
-        { "id": 201, "name": "Flowers" },
-        { "id": 202, "name": "Shrubs" }
-      ]
-    }
-  ]
-
-  // Fetch categories from the API
-
   useEffect(() => {
     setEditCategory(false);
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("/api/categories"); 
-        const data = await response.json();
-        // setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-  
-    fetchCategories();
   }, []);
 
+  const onClear = () => {
+    setCategoryName("")
+    setParentValue("")
+    setDescription("")
+    setImage("")
+    setResetDropdown((prev) => !prev);
+  }
   const onSetParentValue = (category) => {
     setCategoryName(category.name);
     setParentValue(0);
@@ -98,8 +72,18 @@ const AllCategories = () => {
         className={`text-black h-full w-[18rem] p-4 pt-4 mt-6 rounded-none rounded-xl shadow-xl shadow-gray-900/5 bg-gray-200`}
       >
         <div className="flex w-full justify-between mb-2 p-2">
-          {editCategory? (          
-            <Typography className="text-lg font-bold">Please Select Category</Typography>
+          {editCategory? (      
+            <> 
+              <Typography className="text-lg font-bold">Please Select Category</Typography>
+              <Button 
+                className="bg-transparent text-black p-0 border-none shadow-none hover:shadow-none hover:text-gray-500 transition duration-300 ease"
+                onClick={() => {setEditCategory(false); onClear()}}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+              </Button>             
+            </>    
           ):(
             <>          
               <Typography className="text-lg font-bold">All Categories</Typography>
