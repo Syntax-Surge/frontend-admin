@@ -27,20 +27,21 @@ const CategoryForm = ({categories, fetchCategories}) => {
     setDescription,
     image,
     setImage,
-    imageUrl,
-    setImageUrl,
     resetDropdown,
     setResetDropdown,
     editCategory, 
     setEditCategory,
-    selectedItem, } = useCustomContext();
+    selectedItem,
+    setPreviewImage } = useCustomContext();
   
   const onClear = () => {
     setCategoryName("")
     setParentValue("")
     setDescription("")
-    setImage("")
+    setImage(null)
+    setPreviewImage(null);
     setResetDropdown((prev) => !prev);
+    handleFileSelect(null);
   }
 
   useEffect(() => {
@@ -52,29 +53,40 @@ const CategoryForm = ({categories, fetchCategories}) => {
   };
 
   const handleFileSelect = (file) => {
+    console.log("file is", file);
     setImage(file);
   }
 
   const handleUpload = async () => {
-    if (!image) return;
-
+    if (!image) {
+      console.error("No image selected.");
+      return null;
+    }
+  
     const formData = new FormData();
     formData.append('image', image);
-
-    setLoading(true);
+  
+    console.log("form data", image);
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+  
     try {
-      const response = await axios.post(`${BASE_URL}/categories/imageUpload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      setLoading(true);
+      const response = await axios.post(`${BASE_URL}/categories/uploadCategoryImage`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setImageUrl(response.data.url);
+      console.log("Image uploaded successfully:", response.data.url);
+      return response.data.url;
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error('Upload failed:', error.response?.data || error.message);
+      return null;
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   const onSubmit = async () => {
     if (!categoryName ){
@@ -90,18 +102,20 @@ const CategoryForm = ({categories, fetchCategories}) => {
         });
     }
     else{
-      console.log(categoryName, parentValue, description, imageUrl);
+      console.log(categoryName, parentValue, description);
 
       try {
         setLoading(true);
-
-        handleUpload();
+        const uploadedImageUrl = await handleUpload();
+        if (!uploadedImageUrl) {
+          throw new Error("Image upload failed");
+        }
 
         const formData = {
           "name": categoryName,
           "parentValue": parentValue,
           "description": description,
-          "image": imageUrl,
+          "image": uploadedImageUrl,
         }
 
         console.log(formData);
@@ -146,8 +160,6 @@ const CategoryForm = ({categories, fetchCategories}) => {
 
   const onUpdate = async () => {
     const id = selectedItem;
-    setLoading(true);
-    console.log("h2");   
     if (!categoryName){
       toast.error('Please fill required fields', {
         position: "top-center",
@@ -162,17 +174,18 @@ const CategoryForm = ({categories, fetchCategories}) => {
     }
 
     else{
-      try {        
-        console.log("h1");        
+      try {     
         setLoading(true);
-
-        handleUpload();
+        const uploadedImageUrl = await handleUpload();
+        if (!uploadedImageUrl) {
+          throw new Error("Image upload failed");
+        }
 
         const formData = {
           "name": categoryName,
           "parentValue": parentValue,
           "description": description,
-          "image": imageUrl,
+          "image": uploadedImageUrl,
         }
         console.log(formData);
 
@@ -241,7 +254,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
             onClear();
         }
       } catch (error) {
-        console.error('category update failed:', error);
+        console.error('category delete failed:', error);
         toast.error('Category deletion failed!', {
           position: "top-center",
           autoClose: 5000,
@@ -318,7 +331,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
           </label>
           <FileUpload onFileSelect={handleFileSelect}/>
         </div>
-        <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[300px] pt-8 justify-end">
+        <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[30px] pt-8 justify-end pb-12">
           {editCategory? (
             <>            
               <DeleteButton name="Delete" onClick={onDelete} loading={loadingDelete}/>
@@ -326,7 +339,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
             </>
           ):(          
             <>            
-              <AddButtonOutlined name="Clear" onClick={onClear}/>
+              {/* <AddButtonOutlined name="Clear" onClick={onClear}/> */}
               <AddButton name="Add Category" onClick={onSubmit} loading={loading}/>
             </>
           )}

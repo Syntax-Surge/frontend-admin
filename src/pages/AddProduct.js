@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/layout/SideBar";
 import Header from "../components/layout/Header";
-import AddProducts from "./Products/AddProducts";
+import ProductForm from "../components/layout/ProductForm";
 
 const AddProduct = () => {
   return (
@@ -9,8 +9,8 @@ const AddProduct = () => {
       <Sidebar />
       <div className="flex flex-col w-full">
         <Header />
-        <div className="flex flex-col w-full px-10 py-6">
-          <AddProducts />
+        <div className="flex flex-col w-full px-10 py-6 pt-28 lg:pl-80 ">
+          <ProductForm title="Add Product"/>
         </div>
       </div>
     </div>

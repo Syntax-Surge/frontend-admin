@@ -15,21 +15,21 @@ const DropDown = ({reset, onValueChange, categories}) => {
             onValueChange(event.target.value);
         }
     };
-console.log(parentValue)
+    console.log(parentValue)
 
     return (
             <div class="w-full">      
                 <div class="relative">
                     <select
                         className={`w-full bg-transparent text-sm border border-gray-300 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 appearance-none cursor-pointer ${
-                            parentValue === '' ? 'text-gray-400' : 'text-black'
+                            parentValue == '' || parentValue === undefined ? 'text-gray-400' : 'text-black'
                         }`}
                         defaultValue=""
                         value={parentValue}
                         onChange={handleChange}
                     >
                         <option value="" disabled hidden>
-                            Select Parent Category
+                            Select Category
                         </option>
                         {categories.map((p) => (
                             <option value={p.id} >{p.name}</option>
