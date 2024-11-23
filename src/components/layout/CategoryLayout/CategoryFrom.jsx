@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import FileUpload from '../common/FileUpload'
-import AddButton from '../Buttons/AddButton'
-import DropDown from '../common/DropDown'
-import AddButtonOutlined from '../Buttons/AddButtonOutlined'
-import { useCustomContext } from '../../contexts/Context'
+import FileUpload from '../../common/FileUpload'
+import AddButton from '../../Buttons/CommonButtons/AddButton'
+import DropDown from '../../common/DropDown'
+import AddButtonOutlined from '../../Buttons/AddButtonOutlined'
+import { useCustomContext } from '../../../contexts/Context'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import DeleteButton from '../Buttons/DeleteButton'
+import DeleteButton from '../../Buttons/CommonButtons/DeleteButton'
 import axios from 'axios';
-import { BASE_URL } from '../../config'
+import { BASE_URL } from '../../../config'
 
 const CategoryForm = ({categories, fetchCategories}) => {
 
@@ -27,20 +27,22 @@ const CategoryForm = ({categories, fetchCategories}) => {
     setDescription,
     image,
     setImage,
-    imageUrl,
-    setImageUrl,
     resetDropdown,
     setResetDropdown,
     editCategory, 
     setEditCategory,
-    selectedItem, } = useCustomContext();
+    selectedItem,
+    previewImage,
+    setPreviewImage } = useCustomContext();
   
   const onClear = () => {
     setCategoryName("")
     setParentValue("")
     setDescription("")
-    setImage("")
+    setImage(null)
+    setPreviewImage(null);
     setResetDropdown((prev) => !prev);
+    handleFileSelect(null);
   }
 
   useEffect(() => {
@@ -52,29 +54,43 @@ const CategoryForm = ({categories, fetchCategories}) => {
   };
 
   const handleFileSelect = (file) => {
+    console.log("file is", file);
     setImage(file);
   }
 
   const handleUpload = async () => {
-    if (!image) return;
-
+    if (!image && !previewImage) {
+      console.log("No image selected.");
+      return null;
+    }else if (!image || !previewImage){
+      console.log("Image Url found")
+      return previewImage;
+    }
+  
     const formData = new FormData();
     formData.append('image', image);
-
-    setLoading(true);
+  
+    console.log("form data", image);
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+  
     try {
-      const response = await axios.post(`${BASE_URL}/categories/imageUpload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      setLoading(true);
+      const response = await axios.post(`${BASE_URL}/categories/uploadCategoryImage`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setImageUrl(response.data.url);
+      console.log("Image uploaded successfully:", response.data.url);
+      return response.data.url;
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error('Upload failed:', error.response?.data || error.message);
+      return null;
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   const onSubmit = async () => {
     if (!categoryName ){
@@ -90,18 +106,20 @@ const CategoryForm = ({categories, fetchCategories}) => {
         });
     }
     else{
-      console.log(categoryName, parentValue, description, imageUrl);
+      console.log(categoryName, parentValue, description);
 
       try {
         setLoading(true);
-
-        handleUpload();
+        const uploadedImageUrl = await handleUpload();
+        if (!uploadedImageUrl) {
+          throw new Error("Image upload failed");
+        }
 
         const formData = {
           "name": categoryName,
           "parentValue": parentValue,
           "description": description,
-          "image": imageUrl,
+          "image": uploadedImageUrl,
         }
 
         console.log(formData);
@@ -145,9 +163,21 @@ const CategoryForm = ({categories, fetchCategories}) => {
   }
 
   const onUpdate = async () => {
+    if (!selectedItem){
+      toast.error('Please Select a Category', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      return
+    }
     const id = selectedItem;
-    setLoading(true);
-    console.log("h2");   
+
     if (!categoryName){
       toast.error('Please fill required fields', {
         position: "top-center",
@@ -159,20 +189,22 @@ const CategoryForm = ({categories, fetchCategories}) => {
         progress: undefined,
         theme: "light",
         });
+      return;
     }
 
     else{
-      try {        
-        console.log("h1");        
+      try {     
         setLoading(true);
-
-        handleUpload();
+        const uploadedImageUrl = await handleUpload();
+        if (!uploadedImageUrl) {
+          throw new Error("Image upload failed");
+        }
 
         const formData = {
           "name": categoryName,
           "parentValue": parentValue,
           "description": description,
-          "image": imageUrl,
+          "image": uploadedImageUrl,
         }
         console.log(formData);
 
@@ -217,8 +249,20 @@ const CategoryForm = ({categories, fetchCategories}) => {
 
 
   const onDelete = async () => {
+      if (!selectedItem){
+        toast.error('Please Select a Category', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        return
+      }
       const id = selectedItem;
-
       try {            
         setLoadingDelete(true);
 
@@ -241,7 +285,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
             onClear();
         }
       } catch (error) {
-        console.error('category update failed:', error);
+        console.error('category delete failed:', error);
         toast.error('Category deletion failed!', {
           position: "top-center",
           autoClose: 5000,
@@ -318,7 +362,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
           </label>
           <FileUpload onFileSelect={handleFileSelect}/>
         </div>
-        <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[300px] pt-8 justify-end">
+        <div className="w-full gap-2 flex max-w-lg lg:min-w-[400px] min-w-[30px] pt-8 justify-end pb-12">
           {editCategory? (
             <>            
               <DeleteButton name="Delete" onClick={onDelete} loading={loadingDelete}/>
@@ -326,7 +370,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
             </>
           ):(          
             <>            
-              <AddButtonOutlined name="Clear" onClick={onClear}/>
+              {/* <AddButtonOutlined name="Clear" onClick={onClear}/> */}
               <AddButton name="Add Category" onClick={onSubmit} loading={loading}/>
             </>
           )}

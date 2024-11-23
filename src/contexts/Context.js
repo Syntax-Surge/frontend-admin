@@ -7,11 +7,11 @@ export const Provider = ({children}) => {
     const [categoryName, setCategoryName] = useState("");
     const [parentValue, setParentValue] = useState(null);
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(null);
     const [resetDropdown, setResetDropdown] = useState(false);
     const [editCategory, setEditCategory] = useState(true);
-    const [imageUrl, setImageUrl,] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
  
     return(
         <Context.Provider
@@ -28,10 +28,10 @@ export const Provider = ({children}) => {
                 setResetDropdown,
                 editCategory, 
                 setEditCategory,
-                imageUrl,
-                setImageUrl,
                 selectedItem,
-                setSelectedItem
+                setSelectedItem,
+                previewImage,
+                setPreviewImage
             }}
         >
             {children}

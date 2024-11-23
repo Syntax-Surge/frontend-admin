@@ -1,9 +1,9 @@
 import React from "react";
 import Sidebar from "../components/layout/SideBar";
 import Header from "../components/layout/Header";
-import ButtonFilled from "../components/Buttons/ButtonFilled";
-import ButtonOutlined from "../components/Buttons/ButtonOutlined";
-import AddButton from "../components/Buttons/AddButton";
+import ButtonFilled from "../components/Buttons/CommonButtons/ButtonFilled";
+import ButtonOutlined from "../components/Buttons/CommonButtons/ButtonOutlined";
+import AddButton from "../components/Buttons/CommonButtons/AddButton";
 
 const Home = () => {
   return (

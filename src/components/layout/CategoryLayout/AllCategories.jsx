@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import {Card,Typography,Button,} from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { useCustomContext } from "../../contexts/Context";
+import { useCustomContext } from "../../../contexts/Context";
 
 
 const AllCategories = ({categories}) => {
@@ -20,7 +16,8 @@ const AllCategories = ({categories}) => {
     setEditCategory,
     selectedItem,
     setSelectedItem,
-    setResetDropdown } = useCustomContext();
+    setResetDropdown,
+    setPreviewImage } = useCustomContext();
   
   const navigate = useNavigate();
 
@@ -44,13 +41,15 @@ const AllCategories = ({categories}) => {
     setParentValue(0);
     setDescription(category.description);
     setImage(category.image);
+    setPreviewImage(category.image)
   }
 
   const onSetSubValue = (category, sub) => {
     setCategoryName(sub.name);
     setParentValue(category.id);
     setDescription(sub.description);
-    setImage(sub.image);
+    // setImage(sub.image);
+    setPreviewImage(sub.image)
   }
 
   const handleSubClick = (category, sub) => {
