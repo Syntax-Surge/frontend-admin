@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import CategoryForm from '../components/layout/CategoryFrom'
-import Sidebar from '../components/layout/SideBar'
-import Header from '../components/layout/Header'
-import AllCategories from '../components/layout/AllCategories'
+import CategoryForm from '../../components/layout/CategoryLayout/CategoryFrom'
+import Sidebar from '../../components/layout/SideBar'
+import Header from '../../components/layout/Header'
+import AllCategories from '../../components/layout/CategoryLayout/AllCategories'
 import axios from "axios";
-import { BASE_URL } from "../config";
-import { useCustomContext } from "../contexts/Context";
+import { BASE_URL } from "../../config";
+import { useCustomContext } from "../../contexts/Context";
 
 const Category = () => {
   const { setEditCategory,} = useCustomContext();

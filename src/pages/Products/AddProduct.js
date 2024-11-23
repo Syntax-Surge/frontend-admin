@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "../components/layout/SideBar";
-import Header from "../components/layout/Header";
-import ProductForm from "../components/layout/ProductForm";
+import Sidebar from "../../components/layout/SideBar";
+import Header from "../../components/layout/Header";
+import ProductForm from "../../components/layout/ProductLayout/ProductForm";
 
 const AddProduct = () => {
   return (

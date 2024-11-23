@@ -26,8 +26,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex fixed z-50">
-      <div className="lg:hidden pt-9 pl-8">
+    <div className="flex fixed z-50 ">
+      <div className="lg:hidden pt-9 pl-8 bg-white p-2 pb-[17px]">
         {!isSidebarOpen && (
           <button
             onClick={toggleSidebar}

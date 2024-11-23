@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import DropDown from '../common/DropDown';
-import FileUpload from '../common/FileUpload';
-import AddButton from '../Buttons/AddButton';
+import DropDown from '../../common/DropDown';
+import FileUpload from '../../common/FileUpload';
+import AddButton from '../../Buttons/CommonButtons/AddButton';
 import axios from 'axios';
-import { BASE_URL } from '../../config';
-import { useCustomContext } from '../../contexts/Context';
+import { BASE_URL } from '../../../config';
+import { useCustomContext } from '../../../contexts/Context';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
 
   const [categories, setCategories] = useState([]);
   const [resetDropdown] = useState(false);
-  const {setParentValue, image, setImage, setPreviewImage} = useCustomContext();
+  const {setParentValue, image, setImage, previewImage, setPreviewImage} = useCustomContext();
 
   const fetchSubCategories = async () => {
     try {
@@ -58,10 +58,14 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
   }
 
   const handleUpload = async () => {
-    if (!image) {
-      console.error("No image selected.");
+    if (!image && !previewImage) {
+      console.log("No image selected.");
       return null;
+    }else if (!image || !previewImage){
+      console.log("Image Url found")
+      return previewImage;
     }
+    
   
     const formData = new FormData();
     formData.append('image', image);

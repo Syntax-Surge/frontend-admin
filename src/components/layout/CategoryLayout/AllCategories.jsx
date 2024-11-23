@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Card,Typography,Button,} from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { useCustomContext } from "../../contexts/Context";
+import { useCustomContext } from "../../../contexts/Context";
 
 
 const AllCategories = ({categories}) => {
@@ -48,7 +48,7 @@ const AllCategories = ({categories}) => {
     setCategoryName(sub.name);
     setParentValue(category.id);
     setDescription(sub.description);
-    setImage(sub.image);
+    // setImage(sub.image);
     setPreviewImage(sub.image)
   }
 

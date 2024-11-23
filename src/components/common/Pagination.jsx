@@ -20,9 +20,9 @@ const Pagination = ({handlePageChange, totalPages}) => {
   };
  
   return (
-    <div className="flex items-center gap-6 py-4">
+    <div className="flex items-center gap-6 py-2">
       <IconButton
-        className="bg-gray-300 p-1 rounded-2xl"
+        className="bg-gray-300 rounded-3xl"
         onClick={prev}
         disabled={active === 1}
       >
@@ -33,7 +33,7 @@ const Pagination = ({handlePageChange, totalPages}) => {
         <strong className="text-gray-900">{totalPages}</strong>
       </Typography>
       <IconButton
-        className="bg-gray-300 p-1 rounded-2xl"
+        className="bg-gray-300 rounded-3xl"
         onClick={next}
         disabled={active === totalPages}
       >

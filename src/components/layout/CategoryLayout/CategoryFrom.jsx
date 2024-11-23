@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import FileUpload from '../common/FileUpload'
-import AddButton from '../Buttons/AddButton'
-import DropDown from '../common/DropDown'
-import AddButtonOutlined from '../Buttons/AddButtonOutlined'
-import { useCustomContext } from '../../contexts/Context'
+import FileUpload from '../../common/FileUpload'
+import AddButton from '../../Buttons/CommonButtons/AddButton'
+import DropDown from '../../common/DropDown'
+import AddButtonOutlined from '../../Buttons/AddButtonOutlined'
+import { useCustomContext } from '../../../contexts/Context'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import DeleteButton from '../Buttons/DeleteButton'
+import DeleteButton from '../../Buttons/CommonButtons/DeleteButton'
 import axios from 'axios';
-import { BASE_URL } from '../../config'
+import { BASE_URL } from '../../../config'
 
 const CategoryForm = ({categories, fetchCategories}) => {
 
@@ -32,6 +32,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
     editCategory, 
     setEditCategory,
     selectedItem,
+    previewImage,
     setPreviewImage } = useCustomContext();
   
   const onClear = () => {
@@ -58,9 +59,12 @@ const CategoryForm = ({categories, fetchCategories}) => {
   }
 
   const handleUpload = async () => {
-    if (!image) {
-      console.error("No image selected.");
+    if (!image && !previewImage) {
+      console.log("No image selected.");
       return null;
+    }else if (!image || !previewImage){
+      console.log("Image Url found")
+      return previewImage;
     }
   
     const formData = new FormData();
@@ -159,7 +163,21 @@ const CategoryForm = ({categories, fetchCategories}) => {
   }
 
   const onUpdate = async () => {
+    if (!selectedItem){
+      toast.error('Please Select a Category', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      return
+    }
     const id = selectedItem;
+
     if (!categoryName){
       toast.error('Please fill required fields', {
         position: "top-center",
@@ -171,6 +189,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
         progress: undefined,
         theme: "light",
         });
+      return;
     }
 
     else{
@@ -230,8 +249,20 @@ const CategoryForm = ({categories, fetchCategories}) => {
 
 
   const onDelete = async () => {
+      if (!selectedItem){
+        toast.error('Please Select a Category', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        return
+      }
       const id = selectedItem;
-
       try {            
         setLoadingDelete(true);
 

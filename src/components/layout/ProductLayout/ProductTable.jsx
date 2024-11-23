@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-import { BASE_URL } from '../../config';
+import { BASE_URL } from '../../../config';
 
 const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProducts}) => {
 
@@ -61,7 +61,7 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
                 theme="light" 
             />
             <div>
-                <table className="w-full text-left table-auto">
+                <table className="w-full text-left table-auto mb-8">
                     <thead className='bg-gray-200'>
                         <tr className="text-gray-900 uppercase text-md normal-case">
                             <th className="py-4 pl-4 border-b">Product Name</th>
@@ -92,7 +92,7 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
                             
                             {/* Edit Button */}
                             <button
-                                className="text-green-500 mr-2 hover:text-green-700"
+                                className="text-green-500 hover:text-green-900 translation duration-300 ease pr-2"
                                 onClick={() => handleEditClick(product)} 
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -102,7 +102,7 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
                             </button>
 
                             {/* Delete Button */}
-                            <button className="text-green-500 hover:text-green-500"
+                            <button className="text-green-500 hover:text-green-900 translation duration-300 ease"
                                 onClick={() => onDelete(product)}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
