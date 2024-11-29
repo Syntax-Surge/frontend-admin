@@ -62,7 +62,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
     if (!image && !previewImage) {
       console.log("No image selected.");
       return null;
-    }else if (!image || !previewImage){
+    }else if (image || previewImage){
       console.log("Image Url found")
       return previewImage;
     }
@@ -111,7 +111,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
       try {
         setLoading(true);
         const uploadedImageUrl = await handleUpload();
-        if (!uploadedImageUrl) {
+        if (!uploadedImageUrl && image) {
           throw new Error("Image upload failed");
         }
 
@@ -196,7 +196,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
       try {     
         setLoading(true);
         const uploadedImageUrl = await handleUpload();
-        if (!uploadedImageUrl) {
+        if (!uploadedImageUrl && image) {
           throw new Error("Image upload failed");
         }
 
