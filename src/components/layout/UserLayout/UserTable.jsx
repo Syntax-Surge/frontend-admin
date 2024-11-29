@@ -1,66 +1,9 @@
-import axios from 'axios';
 import React from 'react'
-import { ToastContainer, toast } from 'react-toastify';
-import { BASE_URL } from '../../../config';
-import CustomColorOutlinedButton from '../../Buttons/CommonButtons/CustomColorOutlinedButton';
 
-const UserTable = ({products, setIsModalOpen, setSelectedProduct, fetchProducts}) => {
-
-    const onDelete = async (product) => {
-        const id = product.id;
-  
-        try {
-          const response = await axios.delete(`${BASE_URL}/products/${id}`);
-  
-          if (response.status === 200) {
-            toast.success('Category Deleted Successfully', {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              });
-              console.log('response : ', response.data)
-              fetchProducts();
-          }
-        } catch (error) {
-          console.error('category delete failed:', error);
-          toast.error('Category deletion failed!', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            }); 
-        }
-      }
-
-    const handleEditClick = (product) => {
-        setSelectedProduct(product); // Set the product to edit
-        setIsModalOpen(true); // Open the modal
-    };
+const UserTable = ({products}) => {
 
     return (
         <>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                limit={2} 
-                theme="light" 
-            />
             <div>
                 <table className="w-full text-left table-auto mb-8">
                     <thead className='bg-gray-200'>

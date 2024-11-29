@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Category from "./pages/Categories/Category";
 import Order from "./pages/Order";
 import Product from "./pages/Products/Product";
-import Review from "./pages/Review";
+import Review from "./pages/Reviews/Review";
 import User from "./pages/User/User";
 import ButtonTest from "./pages/ButtonTest";
 import AddProduct from "./pages/Products/AddProduct";
