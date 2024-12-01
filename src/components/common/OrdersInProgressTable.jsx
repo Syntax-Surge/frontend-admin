@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OrdersCompletedTable from "./OrdersCompletedTable";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const OrdersInProgressTable = () => {
 
   const [view, setView] = useState("inProgress"); // State to track the current view
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]); 
 
 
   const products = [
@@ -61,6 +63,19 @@ const OrdersInProgressTable = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("/api/orders"); // Update with your API endpoint
+        setOrders(response.data); // Assuming API response is an array of orders
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   const handleOrderInfoClick = (productId) => {
     navigate(`/order-information/${productId}`);
   };
@@ -106,7 +121,7 @@ const OrdersInProgressTable = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {orders.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-100">
                   <td className="py-4 border-b flex items-center">
                     <img

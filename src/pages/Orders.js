@@ -10,7 +10,7 @@ const Orders = () => {
             <Sidebar/>
             <div className='flex flex-col w-full'>
                 <Header/>
-                <div className='flex flex-row w-full'>
+                <div className='flex overflow-y-auto flex-row w-full px-8 py-6 pt-28 lg:pl-80'>
                     <OrdersTable />
                 </div>
             </div>

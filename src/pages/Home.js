@@ -13,9 +13,9 @@ const Home = () => {
         <Sidebar />
       </div>
 
-      <div className="flex-row">
+      <div className="flex flex-col w-full">
         <Header />
-        <div className="flex flex-row gap-5 ml-6">
+        <div className="flex overflow-y-auto flex-row w-full px-8 py-6 pt-28 lg:pl-80">
           <DashboardCard count="200" Icon={UserPlusIcon}/>
           <DashboardCard count="500" Icon={Bars3CenterLeftIcon}/>
           <DashboardCard count="34k" Icon={HomeIcon}/>

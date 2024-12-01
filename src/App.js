@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "./contexts/Context";
 import Home from "./pages/Home";
 import Category from "./pages/Categories/Category";
-import Order from "./pages/Order";
+// import Order from "./pages/Order";
 import Product from "./pages/Products/Product";
 import Review from "./pages/Reviews/Review";
 import User from "./pages/User/User";
@@ -11,6 +11,7 @@ import ButtonTest from "./pages/ButtonTest";
 import OrdersCompletedTable from "./components/common/OrdersCompletedTable";
 import OrderInformation from "./pages/OrderInformation";
 import AddProduct from "./pages/Products/AddProduct";
+import Orders from "./pages/Orders";
 
 
 function App() {
