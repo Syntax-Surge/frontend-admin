@@ -62,7 +62,9 @@ const CategoryForm = ({categories, fetchCategories}) => {
     if (!image && !previewImage) {
       console.log("No image selected.");
       return null;
-    }else if (image || previewImage){
+    }
+    
+    if (!image && previewImage){
       console.log("Image Url found")
       return previewImage;
     }
@@ -285,8 +287,8 @@ const CategoryForm = ({categories, fetchCategories}) => {
             onClear();
         }
       } catch (error) {
-        console.error('category delete failed:', error);
-        toast.error('Category deletion failed!', {
+        console.error('category delete failed:', error.response.data.message);
+        toast.error(`Category deletion failed!, ${error.response.data.message}`,  {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

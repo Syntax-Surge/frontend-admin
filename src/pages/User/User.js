@@ -13,25 +13,25 @@ import UserTable from "../../components/layout/UserLayout/UserTable";
 
 const User = () => {  
   const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [selectedProduct, setSelectedProduct] = useState(null); 
-  const [products, setProducts] = useState([]);  
+  const [selectedUser, setSelectedUser] = useState(null); 
+  const [users, setUsers] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const productsPerPage = 8;
+  const [totalUsers, setTotalUsers] = useState(0);
+  const usersPerPage = 8;
   const navigate = useNavigate();
 
-  const fetchProducts = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/products?page=${currentPage}`);
-      setProducts(response.data.rows); 
-      setTotalProducts(response.data.count);
+      const response = await axios.get(`http://localhost:4000/api/v1/users?page=${currentPage}`);
+      setUsers(response.data.rows); 
+      setTotalUsers(response.data.count);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching users:", error);
     }
   };
 
     // Calculate the total number of pages
-    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    const totalPages = Math.ceil(totalUsers / usersPerPage);
 
     // Handle page navigation
     const handlePageChange = (page) => {
@@ -41,7 +41,7 @@ const User = () => {
     };
 
   useEffect(() => {
-    fetchProducts();
+    fetchUsers();
   }, [currentPage]);
 
   return (
@@ -80,14 +80,12 @@ const User = () => {
             </div>
           </div>
           <div className="flex flex-col w-full justify-center mt-8">
-            <UserTable products={products} setIsModalOpen={setIsModalOpen} setSelectedProduct={setSelectedProduct} fetchProducts={fetchProducts}/>
+            <UserTable users={users} setIsModalOpen={setIsModalOpen} setSelectedUser={setSelectedUser} fetchUsers={fetchUsers}/>
           </div>
           <Modal className="bg-black" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            {selectedProduct && (
-              <ProductForm title="Update Product" selectedProduct={selectedProduct} setIsModalOpen={setIsModalOpen} fetchProducts={fetchProducts}/>
-            )} 
+            
           </Modal>
-          {totalProducts !== 0 ? (       
+          {totalUsers !== 0 ? (       
             <div className="fixed w-full right-0 bottom-0 bg-white">
               <div className="flex flex-col items-end pr-8 pb-2">
                 <Pagination handlePageChange={handlePageChange} totalPages={totalPages}/>

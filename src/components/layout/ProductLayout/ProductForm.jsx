@@ -61,8 +61,12 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
     if (!image && !previewImage) {
       console.log("No image selected.");
       return null;
-    }else if (image || previewImage){
+    }
+    
+    if (!image && previewImage){
       console.log("Image Url found")
+      console.log(image);
+      console.log(previewImage);
       return previewImage;
     }
     
