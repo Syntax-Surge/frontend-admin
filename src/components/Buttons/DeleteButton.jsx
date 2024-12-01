@@ -1,12 +1,12 @@
 import React from "react";
 import { Button } from "@material-tailwind/react";
 
-const AddButton = ({name, onClick}) => {
+const DeleteButton = ({name, onClick}) => {
   return (
     <div>
       <Button
         variant="filled"
-        className="flex items-center justify-center bg-[#03720a] normal-case text-[14px] h-12 transition duration-300 ease hover:bg-[#696969] "
+        className="flex items-center justify-center normal-case text-[16px] h-12 text-white bg-[#ff0000] hover:bg-[#696969] transition duration-300 ease"
         style={{
           height: "35px",
           borderRadius: "4px",
@@ -19,4 +19,4 @@ const AddButton = ({name, onClick}) => {
   );
 };
 
-export default AddButton;
+export default DeleteButton;
