@@ -31,7 +31,7 @@ const Category = () => {
             <Sidebar/>
             <div className='flex flex-col w-full '>
                 <Header/>
-                <div className='flex overflow-y-auto flex-col md:flex-row items-center md:items-start w-full px-8 pt-28 lg:pl-80 '>
+                <div className='flex overflow-y-auto flex-col md:flex-row items-center md:items-start w-full px-8 pt-20 lg:pl-80 '>
                     <AllCategories categories={categories}/>
                     <CategoryForm categories={categories} fetchCategories={fetchCategories}/>
                 </div>

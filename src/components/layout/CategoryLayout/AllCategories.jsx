@@ -41,7 +41,7 @@ const AllCategories = ({categories}) => {
     setCategoryName(category.name);
     setParentValue(0);
     setDescription(category.description);
-    setImage(category.image);
+    // setImage(category.image);
     setPreviewImage(category.image)
   }
 
@@ -103,7 +103,7 @@ const AllCategories = ({categories}) => {
           {categories.map((category) => (
             <div key={category.id}>
               <div key={category.id}
-                className={`p-2 mb-1 mr-8 rounded text-md font-bold ${
+                className={`p-1 mb-1 mr-8 rounded text-md font-bold ${
                   selectedItem === category.id && editCategory
                     ? "bg-[#1B786F] text-lg text-gray-300 font-bold" // Active styles
                     : editCategory
@@ -118,7 +118,7 @@ const AllCategories = ({categories}) => {
               <div className="ml-6">
                 {category.subcategories?.map((sub) => (
                     <div key={sub.id} 
-                      className={`p-2 mr-8 rounded text-sm ${
+                      className={`p-1 mr-8 rounded text-sm ${
                       selectedItem === sub.id && editCategory
                         ? "bg-[#1B786F] text-gray-200 font-bold" // Active styles
                         : editCategory

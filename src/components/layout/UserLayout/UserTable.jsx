@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserTable = ({products}) => {
+const UserTable = ({users}) => {
 
     return (
         <>
@@ -9,27 +9,26 @@ const UserTable = ({products}) => {
                     <thead className='bg-gray-200'>
                         <tr className="text-gray-900 uppercase text-md normal-case">
                             <th className="py-4 pl-4 border-b">Name</th>
-                            <th className="border-b text-center">Total Purchase Amount</th>
-                            <th className="border-b text-center">Last Order Date</th>
+                            <th className="border-b text-left">Email</th>
+                            <th className="border-b text-left">Contact Number</th>
                             <th className="border-b text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {products.map((product) => (
-                        <tr key={product.id} className="hover:bg-gray-100">
+                    {users.map((user) => (
+                        <tr key={user.id} className="hover:bg-gray-100">
                         <td className="py-3 pl-4 border-b flex items-center">
                             <img
-                                src={product.pictureLocation}
-                                alt={product.productName}
+                                src={user.profileImage}
+                                alt={user.firstName}
                                 className="w-10 h-10 rounded-full mr-4"
                             />
                             <div>
-                                <p className="font-semibold">{product.productName}</p>
-                                <p className="text-gray-500 text-sm">{product.orders}number of orders</p>
+                                <p className="font-semibold">{user.firstName} {user.lastName}</p>
                             </div>
                         </td>
-                        <td className="py-3 border-b text-center">{product.unitWeight}</td>
-                        <td className="py-3 border-b text-center">{product.unitPrice}</td>
+                        <td className="py-3 border-b text-left">{user.email}</td>
+                        <td className="py-3 border-b text-left">{user.contactNo}</td>
                         <td className="py-3 border-b text-center">
 
                             {/* Delete Button */}
