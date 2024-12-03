@@ -9,16 +9,16 @@ import {
 } from "@material-tailwind/react";
 import BadgeOverlap from "./BadgeOverlap";
 
-const DashboardCard = ({title,count,percentage,Icon}) => {
+const DashboardCard = ({title,count,percentage,Icon,color}) => {
   return (
     <Card className="mt-6 w-72">
       <CardBody>
         <div className="flex flex-row justify-between">
           <div className="relative -top-10">
-            <BadgeOverlap Icon={Icon}/>
+            <BadgeOverlap color={color} Icon={Icon}/>
           </div>
           <div>
-            <Typography>Users</Typography>
+            <Typography>{title}</Typography>
             <Typography className="font-bold text-xl">{count}</Typography>
           </div>
         </div>

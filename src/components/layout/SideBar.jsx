@@ -50,7 +50,7 @@ const Sidebar = () => {
         </div>
         <hr className="my-2 border-white-200" />
         <List className="text-white">
-          <ListItem>
+          <ListItem onClick={() => navigate("/adminProfile")}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>

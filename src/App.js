@@ -12,6 +12,7 @@ import OrdersCompletedTable from "./components/common/OrdersCompletedTable";
 import OrderInformation from "./pages/OrderInformation";
 import AddProduct from "./pages/Products/AddProduct";
 import Orders from "./pages/Orders";
+import AdminProfile from "./pages/AdminProfile";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route>
+            <Route path="/adminProfile" element= {<AdminProfile />} />
             <Route path="/" element={<Home />} />
             <Route path="/users" element={<User />} />
             <Route path="/products" element={<Product />} />
