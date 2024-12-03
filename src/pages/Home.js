@@ -20,15 +20,13 @@ const Home = () => {
 
 
   useEffect(() => {
-    // Define an async function to fetch the data
     const fetchCounts = async () => {
       try {
-        // Replace these URLs with your actual API endpoints
         const userResponse = await axios.get("/api/users/count");
         const productResponse = await axios.get("/api/products/count");
         const categoryResponse = await axios.get("/api/categories/count");
 
-        // Set state with the response data
+        
         setUserCount(userResponse.data.count);
         setProductCount(productResponse.data.count);
         setCategoryCount(categoryResponse.data.count);
@@ -37,7 +35,7 @@ const Home = () => {
       }
     };
 
-    // Call the fetch function when the component mounts
+    
     fetchCounts();
   }, []);
 
