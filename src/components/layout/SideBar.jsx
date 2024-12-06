@@ -15,9 +15,13 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import axios from "axios";
+import { useState } from "react";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,8 +29,60 @@ const Sidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const logout = async() => {
+    
+    await  axios.get("http://localhost:4000/logout" ).then( (res) => {
+      console.log('res.status', res.status)
+      
+      if(res.status === 200){
+         setIsLoadingSignIn(false)
+         toast.success('Successfully Logged Out', {
+           position: "top-center",
+           autoClose: 5000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           theme: "light",
+           });
+           setTimeout(() => {
+             navigate("/admin/login/");
+           }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
+         
+           // navigate('/')
+         }
+         console.log('res : ', res.data)
+       }).catch( (error) => {
+         setIsLoadingSignIn(false)
+         console.log('error', error.response.data.msg)
+         toast.error(`${error.response.data.msg} !`, {
+           position: "top-center",
+         autoClose: 5000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+         }); 
+     })
+  }
+
   return (
     <div className="flex fixed z-50 ">
+       <ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light" 
+/>
       <div className="lg:hidden pt-9 pl-8 bg-white p-2 pb-[17px]">
         {!isSidebarOpen && (
           <button
@@ -101,7 +157,10 @@ const Sidebar = () => {
             Reviews
           </ListItem>
           <hr className="my-2 border-blue-gray-200" />
-          <ListItem onClick={() => navigate("/buttontest")}>
+          <ListItem onClick={() => 
+            // navigate("/buttontest")
+            logout()
+            }>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>
