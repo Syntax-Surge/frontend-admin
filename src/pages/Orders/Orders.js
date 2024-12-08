@@ -1,27 +1,26 @@
 import React, {useEffect, useState} from "react";
 import Sidebar from "../../components/layout/SideBar";
 import Header from "../../components/layout/Header";
-import Modal from '../../components/common/Modal';
+import OrdersTable from '../../components/layout/OrderLayout/OrderTable';
+import CustomColorFilledButton from '../../components/Buttons/CommonButtons/CustomColorFilledButton';
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../config";
 import axios from "axios";
 import Pagination from "../../components/common/Pagination";
-import UserTable from "../../components/layout/UserLayout/UserTable";
-import CustomColorFilledButton from "../../components/Buttons/CommonButtons/CustomColorFilledButton";
 
-const User = () => {  
+const Orders = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [selectedUser, setSelectedUser] = useState(null); 
-  const [users, setUsers] = useState([]);  
+  const [orders, setOrders] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const usersPerPage = 8;
   const navigate = useNavigate();
 
-  const fetchUsers = async () => {
+
+  const fetchAllOrders = async () => {
     try {
-      const response = await axios.get(`http://localhost:3003/api/v1/users?page=${currentPage}`);
-      setUsers(response.data.rows); 
+      const response = await axios.get(`http://localhost:3003/api/v1/users/getAllUserOrderItems`);
+      setOrders(response.data); 
       setTotalUsers(response.data.count);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -39,8 +38,8 @@ const User = () => {
     };
 
   useEffect(() => {
-    fetchUsers();
-  }, [currentPage]);
+    fetchAllOrders()
+  }, []);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -58,7 +57,8 @@ const User = () => {
             </div>
           </div>
           <div className="flex flex-col w-full justify-center mt-8">
-            <UserTable users={users} setIsModalOpen={setIsModalOpen} setSelectedUser={setSelectedUser} fetchUsers={fetchUsers}/>
+            {/* <OrdersTable orders={orders} setIsModalOpen={setIsModalOpen} setSelectedUser={setSelectedUser} fetchAllOrders={fetchAllOrders}/> */}
+            <OrdersTable orders={orders}   fetchAllOrders={fetchAllOrders}/>
           </div>
           {totalUsers !== 0 ? (       
             <div className="fixed w-full right-0 bottom-0 bg-white">
@@ -70,7 +70,7 @@ const User = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default User;
+export default Orders
