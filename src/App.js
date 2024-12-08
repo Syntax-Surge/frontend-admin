@@ -18,7 +18,6 @@ import Orders from "./pages/Orders/Orders";
 import UserInformation from "../src/pages/User/UserInformation";
 import OrderInformation from "../src/pages/Orders/OrderInformation";
 
-
 function App() {
   return (
     <Provider>
