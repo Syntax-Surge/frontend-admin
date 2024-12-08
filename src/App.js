@@ -9,9 +9,10 @@ import Review from "./pages/Reviews/Review";
 import User from "./pages/User/User";
 import ButtonTest from "./pages/ButtonTest";
 import OrdersCompletedTable from "./components/common/OrdersCompletedTable";
-import OrderInformation from "./pages/OrderInformation";
 import AddProduct from "./pages/Products/AddProduct";
-import Orders from "./pages/Orders";
+import Orders from "./pages/Orders/Orders";
+import UserInformation from "../src/pages/User/UserInformation";
+import OrderInformation from "../src/pages/Orders/OrderInformation";
 
 
 function App() {
@@ -29,7 +30,8 @@ function App() {
             <Route path="/reviews" element={<Review />} />
             <Route path="/buttontest" element={<ButtonTest />} />
             <Route path="/ordersCompleted" element={<OrdersCompletedTable/>} />
-            <Route path="/order-information/:id" element={<OrderInformation />} />
+            <Route path="/users/:id" element={<UserInformation />} />
+            <Route path="/order/:id" element={<OrderInformation />} />
           </Route>
         </Routes>
       </BrowserRouter>

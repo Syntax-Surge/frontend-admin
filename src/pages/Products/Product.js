@@ -3,22 +3,28 @@ import Sidebar from "../../components/layout/SideBar";
 import Header from "../../components/layout/Header";
 import ProductTable from "../../components/layout/ProductLayout/ProductTable";
 import ProductForm from "../../components/layout/ProductLayout/ProductForm";
+import CategorySelector from "../../components/layout/ProductLayout/CategorySelector";
 import AddButton from "../../components/Buttons/CommonButtons/AddButton";
 import Modal from '../../components/common/Modal';
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../config";
-import axios from "axios";
-import { Button } from "@material-tailwind/react";
+import axios from "axios"; 
 
 import CustomColorOutlinedButton from "../../components/Buttons/CommonButtons/CustomColorOutlinedButton";
 import Pagination from "../../components/common/Pagination";
+import CustomColorFilledButton from "../../components/Buttons/CommonButtons/CustomColorFilledButton";
 
 const Product = () => {  
+
+  const [allButton, setAllButton] = useState(true);
+
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [selectedProduct, setSelectedProduct] = useState(null); 
   const [products, setProducts] = useState([]);  
+  const [subCategories, setSubCategories] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("Select Category")
   const productsPerPage = 8;
   const navigate = useNavigate();
 
@@ -29,6 +35,25 @@ const Product = () => {
       setTotalProducts(response.data.count);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+ //fetchCategories
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/categories/subCategories`);
+      setSubCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const filterProducts = async (subCategoryName) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/products/filter?categoryName=${subCategoryName}`);
+      setProducts(response.data.rows); 
+      setTotalProducts(response.data.count);
+    } catch (error) {
+      console.error("Error filtering products:", error);
     }
   };
 
@@ -42,9 +67,23 @@ const Product = () => {
       }
     };
 
+    const onAllButtonRelease = () => {
+      setAllButton(false);
+    }
+
+    const onAllButtonPress = () => {
+      setAllButton(true);
+      fetchProducts();
+      setSelectedCategory("Select Category")
+    }
+
   useEffect(() => {
     fetchProducts();
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchSubCategories();
+  }, []);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -55,28 +94,13 @@ const Product = () => {
           <div className="flex items-center m-2">          
             <div className="flex w-full lg:pl-80 right-0 px-8 py-4 fixed bg-white z-10">
               <div className="flex w-full gap-2">
-                <CustomColorOutlinedButton name='All'/>
-                <CustomColorOutlinedButton name='Most Sold'/>
+                {allButton ? (
+                  <CustomColorFilledButton name='All'  />
+                ):(
+                  <CustomColorOutlinedButton name='All' onClick={onAllButtonPress}/>
+                )}
                 <div className="flex">
-                  <Button className="flex bg-white items-center h-10 justify-center normal-case text-[16px] text-[#3FAEAE] hover:text-white border-2 rounded-3xl border-[#1B786F] hover:border-[#2C9D5D] hover:bg-[#2C9D5D] transition duration-300 ease">
-                    Categories
-                    <span className="ml-2">
-                      <svg
-                        className="w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </span>
-                  </Button>
+                  <CategorySelector filterProducts={filterProducts} setAllButton={setAllButton} subCategories={subCategories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
                 </div>
               </div>
               <div className="flex w-full items-center justify-end pr-4">
