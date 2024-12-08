@@ -10,7 +10,7 @@ import User from "./pages/User/User";
 import ButtonTest from "./pages/ButtonTest";
 import OrdersCompletedTable from "./components/common/OrdersCompletedTable";
 import AddProduct from "./pages/Products/AddProduct";
-import Orders from "./pages/Orders";
+// import Orders from "./pages/Orders";
 import SignIn from "./pages/signIn";
 import ChangePassword from "./pages/chnagePassword";
 import ForgotPassword from "./pages/forgotPassword";
