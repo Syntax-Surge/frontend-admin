@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route ,Navigate } from "react-router-dom";
 import { Provider } from "./contexts/Context";
 import Home from "./pages/Home";
 import Category from "./pages/Categories/Category";
@@ -10,6 +10,10 @@ import User from "./pages/User/User";
 import ButtonTest from "./pages/ButtonTest";
 import OrdersCompletedTable from "./components/common/OrdersCompletedTable";
 import AddProduct from "./pages/Products/AddProduct";
+import Orders from "./pages/Orders";
+import SignIn from "./pages/signIn";
+import ChangePassword from "./pages/chnagePassword";
+import ForgotPassword from "./pages/forgotPassword";
 import Orders from "./pages/Orders/Orders";
 import UserInformation from "../src/pages/User/UserInformation";
 import OrderInformation from "../src/pages/Orders/OrderInformation";
@@ -21,7 +25,19 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/admin/login" replace />} />
+            
+            <Route path="/home" element={<Home />} />
+            <Route path="/admin/login/" element={<SignIn />} />
+         
+            <Route path="/auth/signIn" element={<SignIn/>} />
+            <Route path="/auth/admin/reset/:id" element={<ChangePassword/>} />
+            <Route path="/auth/admin/forgot-password" element={<ForgotPassword/>} />
+
+         
+  
+
+
             <Route path="/users" element={<User />} />
             <Route path="/products" element={<Product />} />
             <Route path="/products/addProduct" element={<AddProduct />} />
