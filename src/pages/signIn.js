@@ -41,12 +41,6 @@ const SignIn = () => {
       );
   };
 
-  const  signInWithGoogle = () => {
-    window.location.href = "http://localhost:4000/login/federated/google";
-  }
-  const  signInWithFacebook = () => {
-    window.location.href = "http://localhost:4000/login/federated/facebook";
-  }
   const  signIn = async() => {
    
     if(email === "" ||  !validateEmail(email) ){
@@ -62,7 +56,7 @@ const SignIn = () => {
       setPasswordError(false)
     }
    setIsLoadingSignIn(true)
-   await  axios.post("http://localhost:4000/admin/login" , userData).then( (res) => {
+   await  axios.post("http://localhost:4000/admin/login" , userData ,{ withCredentials: true }).then( (res) => {
      console.log('res.status', res.status)
      
      if(res.status === 200){
