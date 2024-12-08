@@ -15,9 +15,13 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import axios from "axios";
+import { useState } from "react";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,8 +29,104 @@ const Sidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const logout = async() => {
+    
+   try {
+     await  axios.get("http://localhost:4000/admin/logout", { withCredentials: true }).then( (res) => {
+       console.log('res.status', res.status)
+       
+       if(res.status === 200){
+          setIsLoadingSignIn(false)
+          toast.success('Successfully Logged Out', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            setTimeout(() => {
+              navigate("/admin/login/");
+            }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
+          
+            // navigate('/')
+          }
+          console.log('res : ', res.data)
+        }).catch( (error) => {
+          setIsLoadingSignIn(false)
+          console.log('error', error.response.data.msg)
+          toast.error(`${error.response.data.msg} !`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }); 
+        })
+      } catch (error) {
+     console.log('error', error)
+    toast.error(`Error Occured..Try again!`, {
+      position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    }); 
+   }
+  }
+  const test = async() => {
+     
+    try {
+      const response = await axios.post("http://localhost:4000/admin/inside", {}, { withCredentials: true });
+      console.log('Response Headers:', response.headers);
+      console.log('Response :', response);
+      if (response.status === 200) {
+        // Logout successful
+        // Clear local authentication state
+        // localStorage.removeItem('userId'); // Or any other relevant state
+        // Redirect to login page
+        // window.location.href = '/login'; 
+      } else {
+        // Handle non-200 responses (e.g., 400, 500)
+        throw new Error(`Logout failed with status: ${response.status}`); 
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(`Error Occured..Try again!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
   return (
     <div className="flex fixed z-50 ">
+       <ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light" 
+/>
       <div className="lg:hidden pt-9 pl-8 bg-white p-2 pb-[17px]">
         {!isSidebarOpen && (
           <button
@@ -100,8 +200,19 @@ const Sidebar = () => {
             </ListItemPrefix>
             Reviews
           </ListItem>
+          <ListItem onClick={() => test()}>
+            <ListItemPrefix>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+              </svg>
+            </ListItemPrefix>
+            Testing
+          </ListItem>
           <hr className="my-2 border-blue-gray-200" />
-          <ListItem onClick={() => navigate("/buttontest")}>
+          <ListItem onClick={() => 
+            // navigate("/buttontest")
+            logout()
+            }>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>

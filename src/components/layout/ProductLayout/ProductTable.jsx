@@ -7,12 +7,15 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
 
     const onDelete = async (product) => {
         const id = product.id;
+
+        const confirmed = window.confirm("Are you sure you want to delete this product?");
+        if (!confirmed) return; // Exit if user cancels
   
         try {
           const response = await axios.delete(`${BASE_URL}/products/${id}`);
   
           if (response.status === 200) {
-            toast.success('Category Deleted Successfully', {
+            toast.success('Product Deleted Successfully', {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
@@ -26,8 +29,8 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
               fetchProducts();
           }
         } catch (error) {
-          console.error('category delete failed:', error);
-          toast.error('Category deletion failed!', {
+          console.error('Product delete failed:', error.response.data.message);
+          toast.error(`Product deletion failed! ${error.response.data.message}`, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -75,18 +78,27 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
                     {products.map((product) => (
                         <tr key={product.id} className="hover:bg-gray-100">
                         <td className="py-3 pl-4 border-b flex items-center">
-                            <img
-                                src={product.pictureLocation}
-                                alt={product.productName}
-                                className="w-10 h-10 rounded-full mr-4"
-                            />
+                            {product.pictureLocation ? (
+                                <img
+                                    src={product.pictureLocation}
+                                    alt={product.productName}
+                                    className="w-10 h-10 rounded-full mr-4"
+                                />                                
+                            ):(                            
+                                <img
+                                    src={require("../../../images/category.png")}
+                                    alt={product.productName}
+                                    className="w-10 h-10 rounded-full mr-4"
+                                />
+                            )}
+
                             <div>
                                 <p className="font-semibold">{product.productName}</p>
                                 <p className="text-gray-500 text-sm">{product.orders}number of orders</p>
                             </div>
                         </td>
-                        <td className="py-3 border-b text-center">{product.unitWeight}</td>
-                        <td className="py-3 border-b text-center">{product.unitPrice}</td>
+                        <td className="py-3 border-b text-center">{product.unitWeight} kg</td>
+                        <td className="py-3 border-b text-center">Rs {product.unitPrice}</td>
                         <td className="py-3 border-b text-center">{product.availableQuantity}</td>
                         <td className="py-3 border-b text-center">
                             

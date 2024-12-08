@@ -112,6 +112,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
 
       try {
         setLoading(true);
+
         const uploadedImageUrl = await handleUpload();
         if (!uploadedImageUrl && image) {
           throw new Error("Image upload failed");
@@ -147,8 +148,8 @@ const CategoryForm = ({categories, fetchCategories}) => {
           console.log('response : ', response.data)
         }
       } catch (error) {
-        console.error('category creation failed:', error);
-        toast.error('Category creation failed!', {
+        console.error('category creation failed:', error.response.data.message);
+        toast.error(`Category creation failed! ${error.response.data.message}`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -232,8 +233,8 @@ const CategoryForm = ({categories, fetchCategories}) => {
             onClear();
         }
       } catch (error) {
-        console.error('category update failed:', error);
-        toast.error('Category update failed!', {
+        console.error('category update failed:', error.response.data.message);
+        toast.error(`Category update failed! ${error.response.data.message}`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -265,7 +266,10 @@ const CategoryForm = ({categories, fetchCategories}) => {
         return
       }
       const id = selectedItem;
-      try {            
+      try {
+        const confirmed = window.confirm("Are you sure you want to delete this product?");
+        if (!confirmed) return; // Exit if user cancels
+        
         setLoadingDelete(true);
 
         const response = await axios.delete(`${BASE_URL}/categories/${id}`);
@@ -288,7 +292,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
         }
       } catch (error) {
         console.error('category delete failed:', error.response.data.message);
-        toast.error(`Category deletion failed!, ${error.response.data.message}`,  {
+        toast.error(`Category deletion failed! ${error.response.data.message}`,  {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
