@@ -12,7 +12,7 @@ const ProductTable = ({products, setIsModalOpen, setSelectedProduct, fetchProduc
         if (!confirmed) return; // Exit if user cancels
   
         try {
-          const response = await axios.delete(`${BASE_URL}/products/${id}`);
+          const response = await axios.delete(`${BASE_URL}/products/admin/${id}`);
   
           if (response.status === 200) {
             toast.success('Product Deleted Successfully', {

@@ -129,7 +129,7 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
 
         console.log(formData);
 
-        const response = await axios.put(`${BASE_URL}/products/${id}`, formData, {
+        const response = await axios.put(`${BASE_URL}/products/admin/${id}`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },
@@ -206,7 +206,7 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
 
         console.log(formData);
 
-        const response = await axios.post(`${BASE_URL}/products`, formData, {
+        const response = await axios.post(`${BASE_URL}/products/admin`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },

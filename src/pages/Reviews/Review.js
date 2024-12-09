@@ -43,38 +43,11 @@ const Review = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      <div className="flex flex-col w-full">
-        <Header />
-        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-28 lg:pl-80 ">
-          <div className="flex items-center m-2">          
-            <div className="flex w-full lg:pl-80 right-0 px-8 py-4 fixed bg-white z-10">
-              <div className="flex w-full gap-2">
-                <CustomColorOutlinedButton name='All'/>
-                <CustomColorOutlinedButton name='Most Purchasing Users'/>
-                <div className="flex">
-                  <Button className="flex bg-white items-center h-10 justify-center normal-case text-[16px] text-[#3FAEAE] hover:text-white border-2 rounded-3xl border-[#1B786F] hover:border-[#2C9D5D] hover:bg-[#2C9D5D] transition duration-300 ease">
-                    Categories
-                    <span className="ml-2">
-                      <svg
-                        className="w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* <div className="flex flex-col w-full">
+        <Header /> */}
+        
+        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-16 lg:pl-80 ">
+          
           <div className="flex flex-col w-full justify-center mt-8">
             <ReviewTable reviews={reviews}/>
           </div>
@@ -85,7 +58,7 @@ const Review = () => {
               </div>
             </div>
           ):(null)}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

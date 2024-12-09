@@ -88,9 +88,9 @@ const Product = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      <div className="flex flex-col w-full">
-        <Header />
-        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-28 lg:pl-80 ">
+      {/* <div className="flex flex-col w-full">
+        <Header /> */}
+        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-16 lg:pl-80 ">
           <div className="flex items-center m-2">          
             <div className="flex w-full lg:pl-80 right-0 px-8 py-4 fixed bg-white z-10">
               <div className="flex w-full gap-2">
@@ -124,7 +124,7 @@ const Product = () => {
             </div>
           ):(null)}
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

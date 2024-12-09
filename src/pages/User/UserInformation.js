@@ -18,7 +18,7 @@ const UserInformation = () => {
 
   const fetchAddress = async () => {
     try {
-      const response = await axios.get(`http://localhost:3003/api/v1/users/getAddressById?id=20`);
+      const response = await axios.get(`http://localhost:3002/api/v1/users/getAddressById?id=20`);
       // console.log(response.data);
       setAddress(response.data); 
     } catch (error) {

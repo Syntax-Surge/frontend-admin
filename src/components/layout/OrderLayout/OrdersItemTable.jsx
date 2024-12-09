@@ -7,7 +7,7 @@ const OrdersTable = ({order}) => {
 //   const fetchOrders = async () => {
 //     try {
 //       console.log("hello");
-//       const response = await axios.get(`http://localhost:3003/api/v1/users/getOrders?id=2`);
+//       const response = await axios.get(`http://localhost:3002/api/v1/users/getOrders?id=2`);
 //       console.log("hello",response.data);
 //       setOrders(response.data); 
 //     } catch (error) {

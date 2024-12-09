@@ -19,8 +19,9 @@ const Orders = () => {
 
   const fetchAllOrders = async () => {
     try {
-      const response = await axios.get(`http://localhost:3003/api/v1/users/getAllUserOrderItems`);
-      setOrders(response.data); 
+      const response = await axios.get(`http://localhost:3002/api/v1/orders/orders`);
+      setOrders(response.data.rows); 
+      console.log(response.data.rows[0]);
       setTotalUsers(response.data.count);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -44,17 +45,17 @@ const Orders = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      <div className="flex flex-col w-full">
-        <Header />
-        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-28 lg:pl-80 ">
+      {/* <div className="flex flex-col w-full">
+        <Header /> */}
+        <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-10 lg:pl-80 ">
           <div className="flex items-center m-2">          
-            <div className="flex w-full lg:pl-80 right-0 px-8 py-4 fixed bg-white z-10">
-              <div className="flex w-full gap-2">
+            {/* <div className="flex w-full lg:pl-80 right-0 px-8 py-4 fixed bg-white z-10"> */}
+              {/* <div className="flex w-full gap-2"> */}
                 
-                <CustomColorFilledButton name='All'/>
+                {/* <CustomColorFilledButton name='All'/> */}
                 {/* <CustomColorOutlinedButton name='Most Purchasing Users'/> */}
-              </div>
-            </div>
+              {/* </div> */}
+            {/* </div> */}
           </div>
           <div className="flex flex-col w-full justify-center mt-8">
             {/* <OrdersTable orders={orders} setIsModalOpen={setIsModalOpen} setSelectedUser={setSelectedUser} fetchAllOrders={fetchAllOrders}/> */}
@@ -68,7 +69,7 @@ const Orders = () => {
             </div>
           ):(null)}
         </div>
-      </div>
+      {/* </div> */}
     </div>
   )
 }

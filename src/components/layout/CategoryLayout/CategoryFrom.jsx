@@ -79,7 +79,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
   
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_URL}/categories/uploadCategoryImage`, formData, {
+      const response = await axios.post(`${BASE_URL}/categories/admin/uploadCategoryImage`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log("Image uploaded successfully:", response.data.url);
@@ -127,7 +127,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
 
         console.log(formData);
 
-        const response = await axios.post(`${BASE_URL}/categories`, formData, {
+        const response = await axios.post(`${BASE_URL}/categories/admin`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },
@@ -211,7 +211,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
         }
         console.log(formData);
 
-        const response = await axios.put(`${BASE_URL}/categories/${id}`, formData, {
+        const response = await axios.put(`${BASE_URL}/categories/admin/${id}`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },
@@ -272,7 +272,7 @@ const CategoryForm = ({categories, fetchCategories}) => {
         
         setLoadingDelete(true);
 
-        const response = await axios.delete(`${BASE_URL}/categories/${id}`);
+        const response = await axios.delete(`${BASE_URL}/categories/admin/${id}`);
 
         if (response.status === 200) {
           toast.success('Category Deleted Successfully', {

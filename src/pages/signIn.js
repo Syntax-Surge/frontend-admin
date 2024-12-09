@@ -56,7 +56,7 @@ const SignIn = () => {
       setPasswordError(false)
     }
    setIsLoadingSignIn(true)
-   await  axios.post("http://localhost:4000/admin/login" , userData ,{ withCredentials: true }).then( (res) => {
+   await  axios.post("http://localhost:3002/api/v1/users/admin/login" , userData ,{ withCredentials: true }).then( (res) => {
      console.log('res.status', res.status)
      
      if(res.status === 200){
