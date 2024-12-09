@@ -11,11 +11,7 @@ const FlexibleCard = ({height, width, children }) => {
     
   return (
     <div
-      className="bg-white shadow-2xl rounded-lg p-4 flex flex-col "
-      style={{
-        height: height ? `${height}rem` : "15rem", // Default height if not provided
-        width: width ? `${width}rem` : "15rem",   // Default width if not provided
-      }}
+      className="bg-white shadow-2xl rounded-xl m-2 p-4 flex flex-col w-[400px] items-center"
     >
       {children}
     </div>

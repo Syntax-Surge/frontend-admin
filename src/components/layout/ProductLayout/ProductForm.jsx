@@ -153,8 +153,8 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
             fetchProducts();
         }
       } catch (error) {
-        console.error('product update failed:', error);
-        toast.error('Product update failed!', {
+        console.error('product update failed:', error.response.data.message);
+        toast.error(`Product update failed! ${error.response.data.message}`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -230,8 +230,8 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
             fetchProducts();
         }
       } catch (error) {
-        console.error('product update failed:', error);
-        toast.error('Product add failed!', {
+        console.error('product creation failed:', error?.response?.data?.message);
+        toast.error(`Product creation failed! ${error?.response?.data?.message}`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
