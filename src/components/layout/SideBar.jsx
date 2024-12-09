@@ -18,21 +18,38 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import { useState } from "react";
+import { useCookies } from 'react-cookie';
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  // const [userId, setUserId] = useState("");
 
   const navigate = useNavigate();
+
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+
+  if (cookies.user) {
+
+    console.log('coooooooooooookie 3:', cookies.user.userId)
+    // setUserId(cookies.user.userId)
+  } else {
+    console.log("No user data found in cookies. signin page ");
+  }
+  
+  // console.log('userId ', userId )
+  
+
   const logout = async() => {
     
    try {
-     await  axios.get("http://localhost:4000/admin/logout", { withCredentials: true }).then( (res) => {
+     await  axios.get("http://localhost:3002/api/v1/users/admin/logout", { withCredentials: true }).then( (res) => {
        console.log('res.status', res.status)
        
        if(res.status === 200){
@@ -47,6 +64,8 @@ const Sidebar = () => {
             progress: undefined,
             theme: "light",
             });
+            removeCookie('user',{path:'/'});
+            removeCookie('connect.sid',{path:'/'});
             setTimeout(() => {
               navigate("/admin/login/");
             }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
