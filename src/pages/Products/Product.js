@@ -13,6 +13,7 @@ import axios from "axios";
 import CustomColorOutlinedButton from "../../components/Buttons/CommonButtons/CustomColorOutlinedButton";
 import Pagination from "../../components/common/Pagination";
 import CustomColorFilledButton from "../../components/Buttons/CommonButtons/CustomColorFilledButton";
+import { SyncLoader } from "react-spinners";
 
 const Product = () => {  
 
@@ -25,16 +26,21 @@ const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Select Category")
+    const [loading, setLoading] = useState(false);
+
   const productsPerPage = 8;
   const navigate = useNavigate();
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${BASE_URL}/products?page=${currentPage}`);
       setProducts(response.data.rows); 
       setTotalProducts(response.data.count);
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally{
+      setLoading(false)
     }
   };
  //fetchCategories
@@ -109,7 +115,14 @@ const Product = () => {
             </div>
           </div>
           <div className="flex flex-col w-full justify-center mt-8">
-            <ProductTable products={products} setIsModalOpen={setIsModalOpen} setSelectedProduct={setSelectedProduct} fetchProducts={fetchProducts}/>
+            {loading ? ( 
+              <div className="flex flex-col items-center mt-16 ml-8">
+                <SyncLoader color="#1B786F" size={15} margin={5} />
+                <p className="mt-4 text-gray-600">Loading Products...</p> 
+              </div>
+            ) : (
+              <ProductTable products={products} setIsModalOpen={setIsModalOpen} setSelectedProduct={setSelectedProduct} fetchProducts={fetchProducts}/>
+            )}
           </div>
           <Modal className="bg-black" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             {selectedProduct && (

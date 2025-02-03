@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Input,
@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useCustomContext } from "../../contexts/Context";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -22,10 +23,18 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
+  const {setIsAuthenticated, isAuthenticated} = useCustomContext();
+
   const userData = {
     username: email,
     password: password,
   };
+
+  useEffect(() => {
+    if (isAuthenticated){
+      navigate("/products");
+    }
+  },[setIsAuthenticated])
 
   const validateEmail = (email) => {
     console.log(
@@ -63,18 +72,6 @@ const SignIn = () => {
         console.log("res.status", res.status);
 
         if (res.status === 200) {
-          setIsLoadingSignIn(false);
-          toast.success("Successfully Signed In", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-
           // const queryParams = new URLSearchParams(window.location.search);
 
           // queryParams.forEach((value, key) => {
@@ -88,10 +85,21 @@ const SignIn = () => {
           // console.log("Username:", username);
 
           setTimeout(() => {
-            navigate("/home");
+            navigate("/products");
           }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
 
-          // navigate('/')
+          setIsAuthenticated(false); //
+          setIsLoadingSignIn(false);
+          toast.success("Successfully Signed In", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
         console.log("res : ", res.data);
       })
@@ -132,23 +140,23 @@ const SignIn = () => {
         pauseOnHover
         theme="light"
       />
-      <div className="flex my-10 justify-center ">
-        <div className=" w-1/2 flex  justify-center items-center  h-full mx-10">
-          <div className="w-full">
+      <div className="flex my-10 justify-center items-center">
+        <div className=" w-1/2 flex  justify-center items-center  h-full">
+          {/* <div className="w-full"> */}
             <img
-              src={require("../images/Planty's Logo.png")}
-              alt=""
-              className="mb-10"
+              src={require("../../images/Logo.png")}
+              alt="logo"
+              className=""
             />
-            <img
+            {/* <img
               src={require("../images/Frame61.png")}
               alt=""
               className="w-full"
-            />
-          </div>
+            /> */}
+          {/* </div> */}
         </div>
 
-        <div className="w-1/2 flex  justify-center items-center  h-full">
+        <div className="w-1/2 flex  justify-center items-center  h-full mx-16 mt-8">
           <Card
             color="transparent"
             shadow={false}
@@ -157,17 +165,24 @@ const SignIn = () => {
             <Typography
               variant="h4"
               color="black"
-              className="font-normal text-3xl text-[#239b56] font-roboto flex justify-center items-center"
+              className="font-normal text-3xl text-[#3FAEAE] font-roboto flex justify-center items-center"
             >
-              Welcome Admin portal !
+              Welcome to the Green Haven
+            </Typography>
+            <Typography
+              variant="h4"
+              color="black"
+              className=" font-normal text-3xl text-[#3FAEAE] font-roboto flex justify-center items-center"
+            >
+              Admin Dashboard
             </Typography>
             <Typography
               color="gray"
-              className="mt-1 font-semibold text-[#3FAEAE] font-roboto flex justify-center items-center"
+              className="mt-2 font-semibold text-[#3FAEAE] text-lg font-roboto flex justify-center items-center"
             >
-              Sign In
+              SignIn to Manage Your Shop's Data
             </Typography>
-            <form className=" mt-4 mb-2 w-full max-w-screen-xl sm:w-full">
+            <form className="mt-4 mb-2 w-full max-w-screen-xl sm:w-full">
               <div className=" flex flex-col gap-4">
                 <Typography variant="h6" color="blue-gray" className="-mb-2">
                   Your Email
@@ -214,23 +229,25 @@ const SignIn = () => {
                 <Typography
                   variant="h4"
                   color="black"
-                  className="font-normal text-xl text-[#239b56] font-roboto flex justify-center items-center mt-4 hover:underline"
+                  className="font-normal text-md text-[#3FAEAE] font-roboto flex justify-center items-center mt-4 hover:underline transition duration-500 ease"
                   // onMouseEnter={}
                 >
-                  Forgot Password ?{" "}
+                  Forgot Password?{" "}
                 </Typography>
               </Link>
-              <Button
-                className="mt-6 bg-[#3FAEAE] flex justify-center"
-                fullWidth
-                loading={isLoadingSignIn}
-                onClick={(e) => {
-                  console.log("userData", userData);
-                  signIn();
-                }}
-              >
-                sign In
-              </Button>
+              {/* <div className="flex items-center justify-center">*/}
+                <Button
+                  className="flex items-center justify-center mt-4 bg-[#3FAEAE]  normal-case text-[14px] transition duration-3000 ease hover:bg-[#696969]"
+                  fullWidth
+                  loading={isLoadingSignIn}
+                  onClick={(e) => {
+                    console.log("userData", userData);
+                    signIn();
+                  }}
+                >
+                  Sign In
+                </Button>                
+              {/* </div> */}
             </form>
           </Card>
         </div>

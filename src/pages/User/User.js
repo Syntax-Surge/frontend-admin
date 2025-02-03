@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import Sidebar from "../../components/layout/SideBar";
 import Header from "../../components/layout/Header";
-import Modal from '../../components/common/Modal';
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../config";
 import axios from "axios";
 import Pagination from "../../components/common/Pagination";
 import UserTable from "../../components/layout/UserLayout/UserTable";
 import CustomColorFilledButton from "../../components/Buttons/CommonButtons/CustomColorFilledButton";
+import { SyncLoader } from "react-spinners";
 
 const User = () => {  
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -15,16 +14,21 @@ const User = () => {
   const [users, setUsers] = useState([]);  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [loading, setLoading] = useState(false);
+
   const usersPerPage = 8;
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3003/api/v1/users?page=${currentPage}`);
+      const response = await axios.get(`http://localhost:3002/api/v1/users/users?page=${currentPage}`);
       setUsers(response.data.rows); 
       setTotalUsers(response.data.count);
     } catch (error) {
       console.error("Error fetching users:", error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -58,7 +62,19 @@ const User = () => {
             </div>
           </div>
           <div className="flex flex-col w-full justify-center mt-8">
-            <UserTable users={users} setIsModalOpen={setIsModalOpen} setSelectedUser={setSelectedUser} fetchUsers={fetchUsers}/>
+            {loading ? ( 
+              <div className="flex flex-col items-center mt-16">
+                <SyncLoader color="#1B786F" size={15} margin={5} />
+                <p className="mt-4 text-gray-600">Loading Users...</p> 
+              </div>
+            ) : (
+              <UserTable 
+                users={users} 
+                setIsModalOpen={setIsModalOpen} 
+                setSelectedUser={setSelectedUser} 
+                fetchUsers={fetchUsers} 
+              />
+            )}
           </div>
           {totalUsers !== 0 ? (       
             <div className="fixed w-full right-0 bottom-0 bg-white">

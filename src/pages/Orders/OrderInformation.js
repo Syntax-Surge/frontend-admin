@@ -19,7 +19,7 @@ const OrderInformation = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3005/api/v1/orders/getOrderByOrderId?id=${order?.orderId}`);
+      const response = await axios.get(`http://localhost:3002/api/v1/orders/getOrderByOrderId?id=${order?.orderId}`);
       // console.log(response.data);
       setOrderDetails(response.data.rows[0]); 
     } catch (error) {
