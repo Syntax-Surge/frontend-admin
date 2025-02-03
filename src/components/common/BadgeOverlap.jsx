@@ -1,8 +1,7 @@
 import React from 'react'
 import { Badge, IconButton, Avatar } from "@material-tailwind/react";
-import { HomeIcon,UsersIcon } from "@heroicons/react/24/solid";
 
-const BadgeOverlap = ({color = "bg-red-500",Icon}) => {
+const BadgeOverlap = ({Icon}) => {
   return (
     <div className="flex items-center gap-8">
       <Badge content="5">

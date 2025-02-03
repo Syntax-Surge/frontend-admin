@@ -206,7 +206,7 @@ const ProductForm = ({title, selectedProduct, setIsModalOpen, fetchProducts}) =>
 
         console.log(formData);
 
-        const response = await axios.post(`${BASE_URL}/products/admin`, formData, {
+        const response = await axios.post(`http://localhost:3002/api/v1/products/products/admin`, formData, {
           headers: {
             'Content-Type': 'Application/json',
           },

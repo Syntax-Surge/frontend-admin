@@ -63,23 +63,23 @@ const ChangePassword = () => {
   return (
     <>
     <ToastContainer
-position="top-center"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light" 
-/>
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light" 
+    />
     <div className="flex items-center justify-center h-screen bg-gray-100">
       {/* <h1>user id - {id}</h1> */}
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
     <div className="flex items-start justify-center">
     <img
-            src={require("../images/Planty's Logo.png")}
+            src={require("../../images/Logo.png")}
             alt=""
             className="mb-10"
           />

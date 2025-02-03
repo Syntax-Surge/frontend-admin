@@ -12,6 +12,7 @@ export const Provider = ({children}) => {
     const [editCategory, setEditCategory] = useState(true);
     const [selectedItem, setSelectedItem] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
  
     return(
         <Context.Provider
@@ -31,7 +32,9 @@ export const Provider = ({children}) => {
                 selectedItem,
                 setSelectedItem,
                 previewImage,
-                setPreviewImage
+                setPreviewImage,
+                isAuthenticated,
+                setIsAuthenticated
             }}
         >
             {children}

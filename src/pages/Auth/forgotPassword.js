@@ -92,23 +92,23 @@ const ForgotPassword = () => {
         pauseOnHover
         theme="light"
       />
-      <div className="flex my-10 justify-center ">
-        <div className=" w-1/2 flex  justify-center items-center  h-full mx-10">
-          <div className="w-full">
+      <div className="flex my-10 justify-center items-center">
+        <div className=" w-1/2 flex  justify-center items-center  h-full ">
+          {/* <div className="w-full"> */}
             <img
-              src={require("../images/Planty's Logo.png")}
+              src={require("../../images/Logo.png")}
               alt=""
-              className="mb-10"
+              className=""
             />
-            <img
+            {/* <img
               src={require("../images/Frame61.png")}
               alt=""
               className="w-full"
-            />
-          </div>
+            /> */}
+          {/* </div> */}
         </div>
 
-        <div className="w-1/2 flex  justify-center items-center  h-full">
+        <div className="w-1/2 flex  justify-center items-center h-full mx-16">
           <Card
             color="transparent"
             shadow={false}
@@ -118,9 +118,9 @@ const ForgotPassword = () => {
             <Typography
               variant="h4"
               color="black"
-              className="font-normal text-3xl text-[#239b56] font-roboto flex justify-center items-center"
+              className="font-normal text-3xl text-[#3FAEAE] font-roboto flex justify-center items-center"
             >
-              Enter email to reset Password !
+              Enter email to Reset Password!
             </Typography>
             {/* <Typography
               color="gray"
@@ -154,33 +154,28 @@ const ForgotPassword = () => {
                   </p>
                 </div>
               </div>
-              <Button
-                className="mt-6 bg-[#3FAEAE] w-full lex justify-center"
-                // fullWidth
-                onClick={(e) => {
-                  console.log("userData", userData);
-                  sendMail();
-                }}
-                loading={isLoading}
-              >
-                Submit
-              </Button>
-              {/* <Button loading={true} className="mt-4 w-full flex justify-center">Loading</Button> */}
-
-              <div className="relative flex py-5 items-center">
-                <div class="flex-grow border-t border-gray-400"></div>
-                <span class="flex-shrink mx-4 text-gray-400">Or Sign In</span>
-                <div class="flex-grow border-t border-gray-400"></div>
-              </div>
-              <Link to={"/auth/signIn"}>
-                {" "}
+              {/* <div className="mt-8 gap-4"> */}
                 <Button
-                  className="mt-6 bg-inherit  text-[#239b56] border-[#239b56]  border-solid border-2"
+                  className="mt-8 bg-[#3FAEAE]  normal-case text-[14px] transition duration-3000 ease hover:bg-[#696969]"
                   fullWidth
+                  onClick={(e) => {
+                    console.log("userData", userData);
+                    sendMail();
+                  }}
+                  loading={isLoading}
                 >
-                  Go Back
+                  Submit
                 </Button>
-              </Link>
+                <Link to={"/auth/signIn"}>
+                  {" "}
+                  <Button
+                    className="my-2 bg-inherit normal-case text-[14px] text-[#3FAEAE] border-[#3FAEAE]  border-solid border-2"
+                    fullWidth
+                  >
+                    Go Back
+                  </Button>
+                </Link>
+              {/* </div> */}
             </form>
           </Card>
         </div>

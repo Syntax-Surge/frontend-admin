@@ -18,21 +18,54 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import { useState } from "react";
+import { useCookies } from 'react-cookie';
+import { useCustomContext } from "../../contexts/Context";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+  const {setIsAuthenticated} = useCustomContext();
+
+  const [dashboardSelect, setDashboardSelect] = useState(false);
+  const [userSelect, setUserSelect] = useState(false);
+  const [productSelect, setProductSelect] = useState(false);
+  const [orderSelect, setOrderSelect] = useState(false);
+  const [categorySelect, setCategorySelect] = useState(false);
+  const [reviewSelect, setReviewSelect] = useState(false);
 
   const navigate = useNavigate();
+
+  const clear = () => {
+    setDashboardSelect(false)
+    setUserSelect(false)
+    setProductSelect(false)
+    setOrderSelect(false)
+    setCategorySelect(false)
+    setReviewSelect(false)
+  }
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+
+  if (cookies.user) {
+
+    console.log('coooooooooooookie 3:', cookies.user.userId)
+    // setUserId(cookies.user.userId)
+  } else {
+    console.log("No user data found in cookies. signin page ");
+  }
+  
+  // console.log('userId ', userId )
+  
+
   const logout = async() => {
     
    try {
-     await  axios.get("http://localhost:3002/api/v1/admin/logout", { withCredentials: true }).then( (res) => {
+     await  axios.get("http://localhost:3002/api/v1/users/admin/logout", { withCredentials: true }).then( (res) => {
        console.log('res.status', res.status)
        
        if(res.status === 200){
@@ -47,11 +80,13 @@ const Sidebar = () => {
             progress: undefined,
             theme: "light",
             });
+            removeCookie('user',{path:'/'});
+            removeCookie('connect.sid',{path:'/'});
             setTimeout(() => {
               navigate("/admin/login/");
             }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
           
-            // navigate('/')
+            setIsAuthenticated(false);
           }
           console.log('res : ', res.data)
         }).catch( (error) => {
@@ -115,18 +150,18 @@ const Sidebar = () => {
 
   return (
     <div className="flex fixed z-50 ">
-       <ToastContainer
-position="top-center"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light" 
-/>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" 
+      />
       <div className="lg:hidden pt-9 pl-8 bg-white p-2 pb-[17px]">
         {!isSidebarOpen && (
           <button
@@ -145,45 +180,52 @@ theme="light"
       >
         <div className="mb-2 p-4">
           <Typography variant="h5" color="white">
-            Plant Shop
+            Green Haven
           </Typography>
         </div>
         <hr className="my-2 border-white-200" />
         <List className="text-white">
-          <ListItem>
-            <ListItemPrefix>
-              <UserCircleIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Name
-          </ListItem>
-        </List>
-        <hr className="my-2 border-white-200" />
-        <List className="text-white">
-          {/* <ListItem onClick={() => navigate("/home")}>
+          <ListItem 
+            selected={dashboardSelect}
+            className={dashboardSelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/dashboard"); clear(); setDashboardSelect(true)}}
+          >
             <ListItemPrefix>
               <PresentationChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>
             Dashboard
-          </ListItem> */}
-          <ListItem onClick={() => navigate("/users")}>
+          </ListItem>
+        </List>
+        <hr className="my-2 border-white-200" />
+        <List className="text-white">
+          <ListItem 
+            selected={userSelect}
+            className={userSelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/users"); clear(); setUserSelect(true)}}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
             Users
           </ListItem>
-          <ListItem onClick={() => navigate("/products")}>
+          <ListItem 
+            className={productSelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/products"); clear(); setProductSelect(true)}}>
             <ListItemPrefix>
               <InboxIcon className="h-5 w-5" />
             </ListItemPrefix>
             Products
           </ListItem>
-          <ListItem onClick={() => navigate("/orders")}>
+          <ListItem 
+            className={orderSelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/orders"); clear(); setOrderSelect(true)}}>
             <ListItemPrefix>
               <ShoppingBagIcon className="h-5 w-5" />
             </ListItemPrefix>
             Orders
           </ListItem>
-          <ListItem onClick={() => navigate("/categories")}>
+          <ListItem 
+            className={categorySelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/categories"); clear(); setCategorySelect(true)}}>
             <ListItemPrefix>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
@@ -192,7 +234,9 @@ theme="light"
             </ListItemPrefix>
             Categories
           </ListItem>
-          <ListItem onClick={() => navigate("/reviews")}>
+          <ListItem 
+            className={reviewSelect ? "text-gray-900 bg-gray-300" : ""} 
+            onClick={() => {navigate("/reviews"); clear(); setReviewSelect(true)}}>
             <ListItemPrefix>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />

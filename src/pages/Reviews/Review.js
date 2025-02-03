@@ -43,8 +43,8 @@ const Review = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      {/* <div className="flex flex-col w-full">
-        <Header /> */}
+      <div className="flex flex-col w-full">
+        <Header />
         
         <div className="flex overflow-y-auto flex-col w-full px-8 py-6 pt-16 lg:pl-80 ">
           
@@ -58,7 +58,7 @@ const Review = () => {
               </div>
             </div>
           ):(null)}
-        {/* </div> */}
+        </div>
       </div>
     </div>
   );
